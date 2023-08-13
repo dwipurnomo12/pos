@@ -14,7 +14,7 @@
             <div class="form-group">
                 <label>Kategori</label>
                 <input type="text" class="form-control" name="kategori" id="edit_kategori">
-                <div class="alert alert-danger mt-2 d-none" role="alert" id="alert-kategori"></div>
+                <div class="alert alert-danger mt-2 d-none" role="alert" id="alert-edit_kategori"></div>
             </div>
 
         </div>

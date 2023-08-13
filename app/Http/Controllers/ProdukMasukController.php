@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Stok;
 use App\Models\Produk;
+use App\Models\Supplier;
 use App\Models\ProdukMasuk;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -18,6 +19,7 @@ class ProdukMasukController extends Controller
     {
         return view('produk-masuk.index', [
             'produks'   => Produk::all(),
+            'suppliers' => Supplier::all()
         ]);
     }
 
@@ -28,7 +30,8 @@ class ProdukMasukController extends Controller
     {
         return response()->json([
             'success'   => true,
-            'data'      => ProdukMasuk::all()
+            'data'      => ProdukMasuk::orderBy('id', 'DESC')->get(),
+            'supplier'  => Supplier::all()
         ]);
     }
 
@@ -51,12 +54,14 @@ class ProdukMasukController extends Controller
             'harga_beli'    => 'required',
             'harga_jual'    => 'required',
             'stok_masuk'    => 'required',
+            'supplier_id'   => 'required'
         ], [
             'nm_produk.required'     => 'Nama Produk Tidak Boleh Kosong !',
             'tgl_masuk.required'     => 'Tanggal Masuk Tidak Boleh Kosong !',
             'harga_beli.required'    => 'Harga Beli Tidak Boleh Kosong !',
             'harga_jual.required'    => 'Harga Jual Tidak Boleh Kosong !',
             'stok_masuk.required'    => 'Stok Masuk Tidak Boleh Kosong ',
+            'supplier_id.required'   => 'Wajib Memilih Supplier !'
         ]);
 
         $kd_transaksi = 'PRD-IN-' . str_pad(rand(1, 9999), 4, '0', STR_PAD_LEFT);
@@ -70,7 +75,8 @@ class ProdukMasukController extends Controller
             'nm_produk'      => $request->nm_produk,
             'tgl_masuk'      => $request->tgl_masuk,
             'stok_masuk'     => $request->stok_masuk,
-            'user_id'        => auth()->user()->id
+            'user_id'        => auth()->user()->id,
+            'supplier_id'    => $request->supplier_id
         ]);
 
         if($produkMasuk){

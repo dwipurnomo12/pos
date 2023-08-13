@@ -83,9 +83,9 @@ class KategoriController extends Controller
     {
         $kategori = Kategori::findOrFail($id);
         $validator = Validator::make($request->all(),[
-            'kategori'  => 'required',
+            'kategori'          => 'required',
         ],[
-            'kategori.required' => 'Form Jenis Barang Tidak Boleh Kosong'
+            'kategori.required' => 'Form Kategori Tidak Boleh Kosong'
         ]);
 
         if($validator->fails()){

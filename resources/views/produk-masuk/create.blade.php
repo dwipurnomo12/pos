@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Tambah Produk</h5>
+                <h5 class="modal-title">Tambah Produk Masuk</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -23,7 +23,7 @@
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-6">
-                                    <label>Tetapkan Harga Beli <span style="color: red">*</span></label>
+                                    <label>Masukkan Harga Beli <span style="color: red">*</span></label>
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">Rp</div>
                                         <input type="number" class="form-control" name="harga_beli" id="harga_beli">  
@@ -38,6 +38,16 @@
                                     </div>
                                     <div class="alert alert-danger mt-2 d-none" role="alert" id="alert-harga_jual"></div>
                                 </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Supplier <span style="color: red">*</span></label>
+                                <select class="form-control" name="supplier_id" id="supplier_id">
+                                    <option value=""> -- Pilih Supplier -- </option>
+                                    @foreach ($suppliers as $supplier)
+                                        <option value="{{ $supplier->id }}">{{ $supplier->supplier }}</option>
+                                    @endforeach
+                                </select>
+                                <div class="alert alert-danger mt-2 d-none" role="alert" id="alert-supplier_id"></div>
                             </div>
                         </div>
                         <div class="col-md-6">

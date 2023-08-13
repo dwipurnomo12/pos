@@ -73,7 +73,13 @@
 <script>
     $('body').on('click', '#button_tambah_supplier', function(){
         $('#modal_tambah_supplier').modal('show');
+        clearAlert();
     });
+
+    function clearAlert(){
+        $('#alert-supplier').removeClass('d-block').addClass('d-none');
+        $('#alert-alamat').removeClass('d-block').addClass('d-none');
+    }
 
     $('#store').click(function(e){
         e.preventDefault();

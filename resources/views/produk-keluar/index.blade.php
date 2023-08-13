@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@include('produk-masuk.create')
+@include('produk-keluar.create')
 
 @section('content')
 
@@ -13,9 +13,9 @@
 </style>
 
 <div class="section-header">
-    <h1>Daftar Produk Masuk</h1>
+    <h1>Daftar Produk Keluar</h1>
     <div class="ml-auto">
-        <a href="javascript:void(0)" class="btn btn-primary mx-2" id="button_tambah_barangMasuk"><i class="fa fa-plus"></i> Tambah Produk Masuk</a>
+        <a href="javascript:void(0)" class="btn btn-primary mx-2" id="button_tambah_barangKeluar"><i class="fa fa-plus"></i> Tambah Produk Keluar</a>
     </div>
 </div>
 
@@ -30,9 +30,9 @@
                                 <th>No</th>
                                 <th>Kode Transaksi</th>
                                 <th>Nama Produk</th>
-                                <th>Tanggal Masuk</th>
-                                <th>Stok Masuk</th>
-                                <th>Supplier</th>
+                                <th>Tanggal Keluar</th>
+                                <th>Stok Keluar</th>
+                                <th>Deskripsi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -59,7 +59,7 @@
     var day     = today.getDate().toString().padStart(2, '0');
 
     var formattedDate = year + '-' + month + '-' + day;
-    document.getElementById('tgl_masuk').value = formattedDate;
+    document.getElementById('tgl_keluar').value = formattedDate;
 </script>
 
 <!-- Select2 & Autocomplete -->
@@ -73,7 +73,7 @@
                 var nm_produk      = selectedOption.text();
 
                 $.ajax({
-                    url: 'api/produk-masuk',
+                    url: 'api/produk-keluar',
                     type: 'GET',
                     data: {
                         nm_produk: nm_produk,
@@ -81,12 +81,8 @@
                     success: function (response){
                         if(response.stok || response.stok === 0){
                             $('#stok').val(response.stok);
-                            $('#harga_beli').val(response.harga_beli);
-                            $('#harga_jual').val(response.harga_jual);
                         } else if (response && response.stok === 0){
                             $('#stok').val(0);
-                            $('#harga_beli').val(0);
-                            $('#harga_jual').val(0);
                         }
                     }
                 });
@@ -98,72 +94,59 @@
 <!-- Fetch Data -->
 <script>
     $.ajax({
-        url: '/produk-masuk/get-data',
+        url: '/produk-keluar/get-data',
         type: "GET",
         dataType: 'JSON',
         success: function(response){
             let counter = 1;
             $('#table_id').DataTable().clear();
             $.each(response.data, function(key,value){
-                let supplier    = getSupplierName(response.supplier, value.supplier_id);
-                let produkMasuk = `
+                let produkKeluar = `
                 <tr class="barang-row" id="index_${value.id}">
                     <td>${counter++}</td>   
                     <td>${value.kd_transaksi}</td>
                     <td>${value.nm_produk}</td>
-                    <td>${value.tgl_masuk}</td>
-                    <td>${value.stok_masuk}</td>
-                    <td>${supplier}</td>
+                    <td>${value.tgl_keluar}</td>
+                    <td>${value.stok_keluar}</td>
+                    <td>${value.deskripsi}</td>
                 </tr>
                 `;
-            $('#table_id').DataTable().row.add($(produkMasuk)).draw(false);
+            $('#table_id').DataTable().row.add($(produkKeluar)).draw(false);
             });
-
-            function getSupplierName(suppliers, supplierId){
-                let supplier = suppliers.find(s => s.id === supplierId);
-                return supplier ? supplier.supplier: '';
-            }
         }
     });
 </script>
 
 <!-- Show Modal Tambah & function Store Data -->
 <script>
-    $('body').on('click', '#button_tambah_barangMasuk', function(){
-        $('#modal_tambah_barangMasuk').modal('show');
+    $('body').on('click', '#button_tambah_barangKeluar', function(){
+        $('#modal_tambah_barangKeluar').modal('show');
         clearAlert();
     });
 
     function clearAlert(){
-        $('#alert-harga_beli').removeClass('d-block').addClass('d-none');
-        $('#alert-harga_jual').removeClass('d-block').addClass('d-none');
-        $('#alert-stok_masuk').removeClass('d-block').addClass('d-none');
-        $('#alert-supplier_id').removeClass('d-block').addClass('d-none');
+        $('#alert-stok_keluar').removeClass('d-block').addClass('d-none');
+        $('#alert-deskripsi').removeClass('d-block').addClass('d-none');
     }
 
     $('#store').click(function(e){
         e.preventDefault();
 
         let nm_produk   = $('#nm_produk').val();
-        let tgl_masuk   = $('#tgl_masuk').val();
-        let harga_beli  = $('#harga_beli').val();
-        let harga_jual  = $('#harga_jual').val();
-        let stok_masuk  = $('#stok_masuk').val();
-        let supplier_id = $('#supplier_id').val();
+        let tgl_keluar  = $('#tgl_keluar').val();
+        let stok_keluar = $('#stok_keluar').val();
+        let deskripsi   = $('#deskripsi').val();
         let token       = $("meta[name='csrf-token']").attr("content");
 
         let formData = new FormData();
         formData.append('nm_produk', nm_produk);
-        formData.append('tgl_masuk', tgl_masuk);
-        formData.append('harga_beli', harga_beli);
-        formData.append('harga_jual', harga_jual);
-        formData.append('stok_masuk', stok_masuk);
-        formData.append('nm_produk', nm_produk);
-        formData.append('supplier_id', supplier_id);
+        formData.append('tgl_keluar', tgl_keluar);
+        formData.append('stok_keluar', stok_keluar);
+        formData.append('deskripsi', deskripsi);
         formData.append('_token', token);
 
         $.ajax({
-            url: '/produk-masuk',
+            url: '/produk-keluar',
             type: "POST",
             cache: false,
             data: formData,
@@ -180,42 +163,34 @@
                 });
 
                 $.ajax({
-                    url: '/produk-masuk/get-data',
+                    url: '/produk-keluar/get-data',
                     type: "GET",
                     cache: false,
                     success: function(response){
                         let counter = 1;
                         $('#table_id').DataTable().clear();
                         $.each(response.data, function(key,value){
-                            let supplier    = getSupplierName(response.supplier, value.supplier_id);
-                            let produkMasuk = `
+                            let produkKeluar = `
                             <tr class="barang-row" id="index_${value.id}">
                                 <td>${counter++}</td>   
                                 <td>${value.kd_transaksi}</td>
                                 <td>${value.nm_produk}</td>
-                                <td>${value.tgl_masuk}</td>
-                                <td>${value.stok_masuk}</td>
-                                <td>${supplier}</td>
+                                <td>${value.tgl_keluar}</td>
+                                <td>${value.stok_keluar}</td>
+                                <td>${value.deskripsi}</td>
                             </tr>
                             `;
-                        $('#table_id').DataTable().row.add($(produkMasuk)).draw(false);
+                        $('#table_id').DataTable().row.add($(produkKeluar)).draw(false);
                         });
 
                         $('#nm_produk').val('');
-                        $('#harga_jual').val('');
-                        $('#harga_beli').val('');
-                        $('#stok_masuk').val('');
-                        $('#supplier_id').val('');
+                        $('#stok_keluar').val('');
+                        $('#deskripsi').val('');
 
-                        $('#modal_tambah_barangMasuk').modal('hide');
+                        $('#modal_tambah_barangKeluar').modal('hide');
 
                         let table = $('#table_id').DataTable();
                         table.draw();
-
-                        function getSupplierName(suppliers, supplierId){
-                            let supplier = suppliers.find(s => s.id === supplierId);
-                            return supplier ? supplier.supplier: '';
-                        }
                     },
                     error:function(error){
                         console.log(error);
@@ -230,39 +205,22 @@
                     $('#alert-nm_produk').html(error.responseJSON.nm_produk[0]);
                 }
 
-                if(error.responseJSON && error.responseJSON.harga_beli && error.responseJSON.harga_beli[0]){
-                    $('#alert-harga_beli').removeClass('d-none');
-                    $('#alert-harga_beli').addClass('d-block');
+                if(error.responseJSON && error.responseJSON.stok_keluar && error.responseJSON.stok_keluar[0]){
+                    $('#alert-stok_keluar').removeClass('d-none');
+                    $('#alert-stok_keluar').addClass('d-block');
 
-                    $('#alert-harga_beli').html(error.responseJSON.harga_beli[0]);
+                    $('#alert-stok_keluar').html(error.responseJSON.stok_keluar[0]);
                 }
 
-                if(error.responseJSON && error.responseJSON.harga_jual && error.responseJSON.harga_jual[0]){
-                    $('#alert-harga_jual').removeClass('d-none');
-                    $('#alert-harga_jual').addClass('d-block');
+                if(error.responseJSON && error.responseJSON.deskripsi && error.responseJSON.deskripsi[0]){
+                    $('#alert-deskripsi').removeClass('d-none');
+                    $('#alert-deskripsi').addClass('d-block');
 
-                    $('#alert-harga_jual').html(error.responseJSON.harga_jual[0]);
-                }
-
-                if(error.responseJSON && error.responseJSON.stok_masuk && error.responseJSON.stok_masuk[0]){
-                    $('#alert-stok_masuk').removeClass('d-none');
-                    $('#alert-stok_masuk').addClass('d-block');
-
-                    $('#alert-stok_masuk').html(error.responseJSON.stok_masuk[0]);
-                }
-
-                if(error.responseJSON && error.responseJSON.supplier_id && error.responseJSON.supplier_id[0]){
-                    $('#alert-supplier_id').removeClass('d-none');
-                    $('#alert-supplier_id').addClass('d-block');
-
-                    $('#alert-supplier_id').html(error.responseJSON.supplier_id[0]);
+                    $('#alert-deskripsi').html(error.responseJSON.deskripsi[0]);
                 }
             }
         });
     });
-
-
 </script>
-
 
 @endsection

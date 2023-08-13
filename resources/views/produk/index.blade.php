@@ -81,7 +81,16 @@
 <script>
     $('body').on('click', '#button_tambah_produk', function(){
         $('#modal_tambah_produk').modal('show');
+        clearAlert();
     });
+
+    function clearAlert(){
+        $('#alert-nm_produk').removeClass('d-block').addClass('d-none');
+        $('#alert-kategori_id').removeClass('d-block').addClass('d-none');
+        $('#alert-supplier_id').removeClass('d-block').addClass('d-none');
+        $('#alert-deskripsi').removeClass('d-block').addClass('d-none');
+        $('#alert-satuan_id').removeClass('d-block').addClass('d-none');
+    }
 
     $('#store').click(function(e){
         e.preventDefault();

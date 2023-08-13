@@ -71,7 +71,12 @@
 <script>
     $('body').on('click', '#button_tambah_kategori', function(){
         $('#modal_tambah_kategori').modal('show');
+        clearAlert();
     });
+
+    function clearAlert(){
+        $('#alert-kategori').removeClass('d-block').addClass('d-none');
+    }
 
     $('#store').click(function(e){
         e.preventDefault();
@@ -150,6 +155,7 @@
 <script>
     $('body').on('click', '#button_edit_kategori', function(){
         let kategori_id = $(this).data('id');
+        clearAlert();
 
         $.ajax({
             url: `/kategori/${kategori_id}/edit`,
@@ -163,6 +169,10 @@
             }
         });
     });
+
+    function clearAlert(){
+        $('#alert-kategori').removeClass('d-block').addClass('d-none');
+    }
 
     $('#update').click(function(e){
         e.preventDefault();
@@ -201,11 +211,11 @@
             },
             
             error:function(error){
-                if(error.responseJSON && error.responseJSON.kategori && error.responseJSON.kategori[0]){
-                    $('#alert-kategori').removeClass('d-none');
-                    $('#alert-kategori').addClass('d-block');
+                if(error.responseJSON && error.responseJSON.edit_kategori && error.responseJSON.edit_kategori[0]){
+                    $('#alert-edit_kategori').removeClass('d-none');
+                    $('#alert-edit_kategori').addClass('d-block');
 
-                    $('#alert-kategori').html(error.responseJSON.kategori[0]);
+                    $('#alert-edit_kategori').html(error.responseJSON.edit_kategori[0]);
                 }
             }
         });

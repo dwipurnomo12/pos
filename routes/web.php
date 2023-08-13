@@ -8,8 +8,10 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SatuanController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\ProdukController;
+use App\Http\Controllers\ProdukKeluarController;
 use App\Http\Controllers\ProdukMasukController;
 use App\Http\Controllers\SupplierController;
+use App\Models\ProdukKeluar;
 use App\Models\ProdukMasuk;
 
 /*
@@ -45,3 +47,7 @@ Route::resource('/satuan', SatuanController::class);
 Route::get('/produk-masuk/get-data', [ProdukMasukController::class, 'getDataProdukMasuk']);
 Route::get('/api/produk-masuk', [ProdukMasukController::class, 'getAutoCompleteData']);
 Route::resource('/produk-masuk', ProdukMasukController::class);
+
+Route::get('/produk-keluar/get-data', [ProdukKeluarController::class, 'getDataProdukKeluar']);
+Route::get('/api/produk-keluar', [ProdukKeluarController::class, 'getAutoCompleteData']);
+Route::resource('/produk-keluar', ProdukKeluarController::class);

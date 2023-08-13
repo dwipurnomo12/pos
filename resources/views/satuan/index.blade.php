@@ -72,8 +72,13 @@
 <script>
     $('body').on('click', '#button_tambah_satuan', function(){
         $('#modal_tambah_satuan').modal('show');
+        clearAlert();
     });
 
+    function clearAlert(){
+        $('#alert-satuan').removeClass('d-block').addClass('d-none');
+    }
+    
     $('#store').click(function(e){
         e.preventDefault();
 

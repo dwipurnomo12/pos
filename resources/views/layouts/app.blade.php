@@ -109,7 +109,7 @@
               
               <li class="menu-header">Master Data</li>
               <li class="dropdown">
-                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-columns"></i> <span>Master Produk</span></a>
+                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-boxes"></i> <span>Master Produk</span></a>
                 <ul class="dropdown-menu">
                   <li><a class="nav-link {{ Request::is('/produk') || Request::is('produk') ? 'active' : '' }}" href="/produk">Produk</a></li>
                   <li><a class="nav-link {{ Request::is('/kategori') || Request::is('kategori') ? 'active' : '' }}" href="/kategori">Kategori</a></li>
@@ -119,14 +119,22 @@
               </li>
 
               <li class="menu-header">Transaksi</li>
-              <li class="dropdown">
-                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-columns"></i> <span>Transaksi Produk</span></a>
-                <ul class="dropdown-menu">
-                  <li><a class="nav-link {{ Request::is('/produk-masuk') || Request::is('produk-masuk') ? 'active' : '' }}" href="/produk-masuk">Produk Masuk</a></li>
-                  <li><a class="nav-link {{ Request::is('/produk-keluar') || Request::is('produk-keluar') ? 'active' : '' }}" href="/produk-keluar">Produk Keluar</a></li>
-                  <li><a class="nav-link {{ Request::is('/penjualan') || Request::is('penjualan') ? 'active' : '' }}" href="/penjualan">Menu Penjualan</a></li>
-                </ul>
+              <li class="sidebar-item">
+                <a class="nav-link {{ Request::is('/produk-masuk') || Request::is('produk-masuk') ? 'active' : '' }}" href="/produk-masuk">
+                  <i class="fa fa-sharp fa-file-import"></i> <span class="align-middle">Barang Masuk</span>
+                </a>
               </li>
+              <li class="sidebar-item">
+                <a class="nav-link {{ Request::is('/produk-keluar') || Request::is('produk-keluar') ? 'active' : '' }}" href="/produk-keluar">
+                  <i class="fa fa-sharp fa-file-export"></i> <span class="align-middle">Barang Keluar</span>
+                </a>
+              </li>
+              <li class="sidebar-item">
+                <a class="nav-link {{ Request::is('/menu-penjualan') || Request::is('menu-penjualan') ? 'active' : '' }}" href="/menu-penjualan">
+                  <i class="fa fa-solid fa-cart-arrow-down"></i> <span class="align-middle">Menu Penjualan</span>
+                </a>
+              </li>
+
               
           </ul>
 
