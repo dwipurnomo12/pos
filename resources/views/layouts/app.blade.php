@@ -135,6 +135,12 @@
                 </a>
               </li>
 
+              <li class="menu-header">Settings</li>
+              <li class="sidebar-item">
+                <a class="nav-link {{ Request::is('/setting-penjualan') || Request::is('setting-penjualan') ? 'active' : '' }}" href="/setting-penjualan">
+                  <i class="fas fa-store"></i> <span class="align-middle">Diskon & PPn</span>
+                </a>
+              </li>
               
           </ul>
 

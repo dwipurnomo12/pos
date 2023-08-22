@@ -11,14 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pembelians', function (Blueprint $table) {
+        Schema::create('setting_penjualans', function (Blueprint $table) {
             $table->id();
-            $table->string('kd_pembelian')->unique();
-            $table->decimal('jumlah_pembayaran', 10, 2);
-            $table->decimal('sub_total', 10, 2);
-            $table->decimal('uang_kembalian', 10, 2);
-            $table->integer('diskon');
-            $table->integer('ppn');
+            $table->boolean('diskon_enabled')->default(false);
+            $table->integer('diskon_presentase')->nullable();
+            $table->boolean('ppn_enabled')->default(false);
+            $table->integer('ppn_presentase')->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pembelians');
+        Schema::dropIfExists('setting_penjualans');
     }
 };

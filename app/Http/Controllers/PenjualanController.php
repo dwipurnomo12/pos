@@ -7,6 +7,7 @@ use App\Models\Pembelian;
 use Illuminate\Http\Request;
 use App\Models\DetailPembelian;
 use App\Http\Controllers\Controller;
+use App\Models\SettingPenjualan;
 
 class PenjualanController extends Controller
 {
@@ -15,40 +16,15 @@ class PenjualanController extends Controller
      */
     public function index()
     {
+        $settingPenjualan = SettingPenjualan::first();
         return view('menu-penjualan.index', [
-            'produks'   => Produk::all()
+            'produks'   => Produk::all(),
+            'diskon_enabled'    => $settingPenjualan->diskon_enabled == 1,
+            'ppn_enabled'       => $settingPenjualan->ppn_enabled == 1,
+            'diskonPresentase'  => $settingPenjualan->diskon_presentase,
+            'ppnPresentase'     => $settingPenjualan->ppn_presentase,
         ]);
     }
-
-    /**
-     * Display & Proses pembelian .
-    */
-    public function pembelian(Request $request)
-{
-    $kd_pembelian       = 'INV-' . str_pad(rand(1, 9999), 4, '0', STR_PAD_LEFT);
-    $jenis_pembayaran   = $request->input('jenis_pembayaran');
-    $jumlah_pembayaran  = $request->input('jumlah_pembayaran');
-
-    $pembelian = new Pembelian();
-    $pembelian->kd_pembelian        = $kd_pembelian;
-    $pembelian->jenis_pembayaran    = $jenis_pembayaran;
-    $pembelian->jumlah_pembayaran   = $jumlah_pembayaran;
-    $pembelian->save();
-
-    // $detailPembelianData = $dataPembelian['produk_item'];
-    // foreach ($detailPembelianData as $item) {
-    //     $detailPembelian = new DetailPembelian();
-    //     $detailPembelian->kd_pembelian = $kd_pembelian; // Hubungkan dengan kode pembelian yang baru dibuat
-    //     $detailPembelian->nm_produk = $item['nm_produk'];
-    //     $detailPembelian->harga_produk = $item['harga_produk'];
-    //     $detailPembelian->quantity = $item['quantity'];
-    //     $detailPembelian->total_harga_produk = $item['total_harga_produk'];
-    //     $detailPembelian->save();
-    // }
-
-    // Kembalikan respons
-    return response()->json(['message' => 'Data pembelian berhasil disimpan']);
-}
 
 
     /**
@@ -64,7 +40,46 @@ class PenjualanController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Validate the incoming request data
+        $request->validate([
+            'jumlah_pembayaran' => 'required|numeric',
+            'pembelian_item'    => 'required|array',
+            'sub_total'          => 'required|numeric',
+        ]);
+
+        $kd_pembelian       = 'INV-' . str_pad(rand(1, 9999), 4, '0', STR_PAD_LEFT);
+        $jumlah_pembayaran  = $request->input('jumlah_pembayaran');
+        $subTotal           = $request->input('sub_total');
+        $uangKembalian      = $request->input('uang_kembalian');
+        $diskon             = $request->input('diskon');;
+        $ppn                = $request->input('ppn');;
+
+        $pembelian = new Pembelian();
+        $pembelian->kd_pembelian        = $kd_pembelian;
+        $pembelian->jumlah_pembayaran   = $jumlah_pembayaran;
+        $pembelian->sub_total           = $subTotal;
+        $pembelian->uang_kembalian      = $uangKembalian;
+        $pembelian->diskon              = $diskon;
+        $pembelian->ppn                 = $ppn;
+        $pembelian->save();
+
+        foreach ($request->input('pembelian_item') as $item) {
+            $detailPembelian = new DetailPembelian();
+            $detailPembelian->nm_produk             = $item['nm_produk'];
+            $detailPembelian->harga_produk          = $item['harga_produk'];
+            $detailPembelian->quantity              = $item['quantity'];
+            $detailPembelian->total_harga_produk    = $item['total_harga_produk'];
+            $detailPembelian->pembelian_id          = $pembelian->id;
+            $detailPembelian->save();
+
+            $produkStok = Produk::where('nm_produk', $item['nm_produk'])->first();
+            if($produkStok){
+                $updateStok = $produkStok->stok - $item['quantity'];
+                $produkStok->update(['stok' => $updateStok]);
+            }
+        }
+
+        return response()->json(['message' => 'Data pembelian berhasil disimpan'], 200);
     }
 
     /**

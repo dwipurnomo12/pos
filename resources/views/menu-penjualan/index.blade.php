@@ -66,22 +66,30 @@
 
                 <div class="card-body">
                     <input type="hidden" id="id">
-                    <div class="form-group">
-                        <label for="jenis_pembayaran">Jenis Pembayaran <span style="color: red">*</span></label>
-                        <select class="form-control" id="jenis_pembayaran">
-                            <option value="cash">Cash</option>
-                            <option value="utang">Utang</option>
-                        </select>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
+                        <div class="form-group">
                             <label for="jumlah_pembayaran">Jumlah Pembayaran <span style="color: red">*</span></label>
                             <div class="input-group-prepend">
                                 <div class="input-group-text">Rp</div>
                                 <input type="number" class="form-control" id="jumlah_pembayaran">
                             </div>
                         </div>
-                        <div class="form-group col-md-6">
+    
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="diskon">Diskon</label>
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">%</div>
+                                <input type="number" class="form-control" name="diskon" id="diskon" value="{{ $diskon_enabled ? $diskonPresentase : 0 }}" disabled>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="ppn">PPn</label>
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">%</div>
+                                <input type="number" class="form-control" name="ppn" id="ppn" value="{{ $ppn_enabled ? $ppnPresentase : 0 }}" disabled>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-4">
                             <label for="uang_kembalian">Kembalian</label>
                             <div class="input-group-prepend">
                                 <div class="input-group-text">Rp</div>
@@ -167,7 +175,16 @@
                     var totalHarga      = hitungTotalHarga(nm_produk, quantity);
                     totalKeseluruhan   += totalHarga;
                 });
-            $('#totalHarga').text('Rp. ' + totalKeseluruhan);
+                var diskonPresentase    = parseFloat($('#diskon').val()); 
+                var ppnPresentase       = parseFloat($('#ppn').val());
+
+                var totalDiskon = (totalKeseluruhan * diskonPresentase) / 100;
+                var totalPPn    = (totalKeseluruhan * ppnPresentase) / 100;
+
+                var totalKeseluruhanFix = totalKeseluruhan - totalDiskon + totalPPn;
+
+                $('#totalHarga').text('Rp. ' + totalKeseluruhanFix);
+    
         }
 
         // Kurangi Quantity pada keranjang 
@@ -207,18 +224,23 @@
 
         // Proses pembayaran
         $('#proses_pembayaran').on('click', function(){
-            var jenisPembayaran     = $('#jenis_pembayaran').val();
             var jumlahPembayaran    = parseFloat($('#jumlah_pembayaran').val()); 
-
-            var produkData = [];
-            var subTotal   = 0;
+            var diskonPresentase    = parseFloat($('#diskon').val()); 
+            var ppnPresentase       = parseFloat($('#ppn').val());
+            var produkData          = [];
+            var subTotal            = 0;
 
             $('.cart-item').each(function() {
                 var nm_produk           = $(this).data('nm-produk');
                 var harga_produk        = parseFloat($(this).find('td:eq(2)').text().replace('Rp. ', '')); 
                 var quantity            = parseInt($(this).find('.quantity').text());
                 var totalHargaProduk    = harga_produk * quantity;
-                subTotal += totalHargaProduk;
+                
+                var totalDiskon = (totalHargaProduk * diskonPresentase) / 100;
+                var totalPPn    = (totalHargaProduk * ppnPresentase) / 100;
+
+                var totalPerItem = totalHargaProduk - totalDiskon + totalPPn;
+                subTotal += totalPerItem;
 
                 produkData.push({
                     nm_produk: nm_produk,
@@ -228,10 +250,8 @@
                 });
             });
 
-
             var uangKembalian = jumlahPembayaran - subTotal;
             var dataPembelian = {
-                jenis_pembayaran: jenisPembayaran,
                 jumlah_pembayaran: jumlahPembayaran,
                 produk_item: produkData,
                 subTotal: subTotal,
@@ -245,20 +265,22 @@
                 method: 'POST',
                 data:{
                     _token: '{{ csrf_token() }}',
-                    jenis_pembayaran: jenisPembayaran,
-                    jumlah_pembayaran: jumlahPembayaran
+                    jumlah_pembayaran: jumlahPembayaran,
+                    diskon: diskonPresentase,
+                    ppn: ppnPresentase,
+                    pembelian_item: dataPembelian.produk_item,
+                    sub_total: dataPembelian.subTotal,
+                    uang_kembalian: dataPembelian.uangKembalian,
                 },
+                
                 success: function(response){
-                    console.log('message:', response);
+                    console.log('message');
                 },
                 error: function(xhr, status, error) {
                     console.log('Error:', error);
                 }
             });
-
         });
-
-
     });
 </script>
 

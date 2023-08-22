@@ -6,6 +6,7 @@ namespace Database\Seeders;
 use App\Models\User;
 use App\Models\Satuan;
 use App\Models\Kategori;
+use App\Models\SettingPenjualan;
 use App\Models\Supplier;
 use Illuminate\Database\Seeder;
 
@@ -50,6 +51,13 @@ class DatabaseSeeder extends Seeder
             'supplier'  => 'Toko Daya Agung Purworejo',
             'alamat'    => 'Baledono, Purworejo',
             'user_id'   => 1
+        ]);
+
+        SettingPenjualan::create([
+            'diskon_enabled'    => 1,
+            'diskon_presentase' => 0.10,
+            'ppn_enabled'       => 1,
+            'ppn_presentase'    => 0.10
         ]);
     }
 }
