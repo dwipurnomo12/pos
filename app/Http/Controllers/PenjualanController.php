@@ -18,7 +18,7 @@ class PenjualanController extends Controller
     {
         $settingPenjualan = SettingPenjualan::first();
         return view('menu-penjualan.index', [
-            'produks'   => Produk::all(),
+            'produks'           => Produk::where('stok', '>', 0)->get(),
             'diskon_enabled'    => $settingPenjualan->diskon_enabled == 1,
             'ppn_enabled'       => $settingPenjualan->ppn_enabled == 1,
             'diskonPresentase'  => $settingPenjualan->diskon_presentase,
@@ -26,41 +26,35 @@ class PenjualanController extends Controller
         ]);
     }
 
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        // Validate the incoming request data
-        $request->validate([
-            'jumlah_pembayaran' => 'required|numeric',
-            'pembelian_item'    => 'required|array',
-            'sub_total'          => 'required|numeric',
-        ]);
-
         $kd_pembelian       = 'INV-' . str_pad(rand(1, 9999), 4, '0', STR_PAD_LEFT);
+        $nm_pelanggan       = $request->input('nm_pelanggan');
         $jumlah_pembayaran  = $request->input('jumlah_pembayaran');
+        $status             = $request->input('status');
         $subTotal           = $request->input('sub_total');
-        $uangKembalian      = $request->input('uang_kembalian');
-        $diskon             = $request->input('diskon');;
-        $ppn                = $request->input('ppn');;
+        $diskon             = $request->input('diskon');
+        $ppn                = $request->input('ppn');
 
         $pembelian = new Pembelian();
         $pembelian->kd_pembelian        = $kd_pembelian;
         $pembelian->jumlah_pembayaran   = $jumlah_pembayaran;
         $pembelian->sub_total           = $subTotal;
-        $pembelian->uang_kembalian      = $uangKembalian;
         $pembelian->diskon              = $diskon;
         $pembelian->ppn                 = $ppn;
+        if ($status === '1') { // Jika pembayaran hutang
+            $uang_kekurangan = $request->input('uang_kekurangan');
+            $pembelian->status = 'hutang';
+            $pembelian->uang_kekurangan = $uang_kekurangan;
+            $pembelian->nm_pelanggan = $nm_pelanggan;
+        } else if ($status === '2') { // Jika pembayaran cash
+            $uang_kembalian = $request->input('uang_kembalian');
+            $pembelian->status = 'lunas';
+            $pembelian->uang_kembalian = $uang_kembalian;
+        }
         $pembelian->save();
 
         foreach ($request->input('pembelian_item') as $item) {
@@ -79,40 +73,12 @@ class PenjualanController extends Controller
             }
         }
 
-        return response()->json(['message' => 'Data pembelian berhasil disimpan'], 200);
+        return response()->json([
+            'kd_pembelian'  => $kd_pembelian,
+            'message'       => 'Data pembelian berhasil disimpan'
+        ], 200);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
 
     /**
      * Create Autocomplete Data

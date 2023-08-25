@@ -14,9 +14,12 @@ return new class extends Migration
         Schema::create('pembelians', function (Blueprint $table) {
             $table->id();
             $table->string('kd_pembelian')->unique();
-            $table->decimal('jumlah_pembayaran', 10, 2);
+            $table->string('nm_pelanggan')->nullable();
+            $table->decimal('jumlah_pembayaran', 10, 2)->nullable()->default(0);
             $table->decimal('sub_total', 10, 2);
-            $table->decimal('uang_kembalian', 10, 2);
+            $table->decimal('uang_kembalian', 10, 2)->nullable()->default(0);
+            $table->decimal('uang_kekurangan', 10, 2)->nullable()->default(0);
+            $table->enum('status', ['lunas', 'hutang']);
             $table->integer('diskon');
             $table->integer('ppn');
             $table->timestamps();

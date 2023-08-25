@@ -12,6 +12,9 @@
 
 <div class="section-header">
     <h1>Menu Penjualan kasir</h1>
+    <div class="ml-auto">
+        <button type="button" class="btn btn-danger float-right" id="refresh"><i class="fas fa-redo"></i>  Reset Form</button>
+    </div>
 </div>
 
 <div class="row">
@@ -24,12 +27,15 @@
                 <div class="form-group">
                     <label>Pilih Produk<span style="color: red">*</span></label>
                     <select class="select2" name="nm_produk[]" id="nm_produk" multiple="multiple" style="width: 100%">
-                            @foreach ($produks as $produk)
+                        @foreach ($produks as $produk)
+                            @if ($produk->stok > 0) 
                                 <option value="{{ $produk->nm_produk }}" data-harga_jual="{{ $produk->harga_jual }}"> {{ $produk->nm_produk }}</option>
-                            @endforeach
-                        </select>
+                            @endif
+                        @endforeach
+                    </select>
                     <div class="alert alert-danger mt-2 d-none" role="alert" id="alert-nm_produk"></div>
                 </div>
+                
                 <button type="button" class="btn btn-primary float-right" id="store">Lanjutkan</button>
             </div>
         </div>
@@ -48,56 +54,142 @@
                     </div>
                 </div>
 
-                <table class="table table-striped" >
-                    <thead>
-                      <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Produk</th>
-                        <th scope="col">Harga</th>
-                        <th scope="col">QTY</th>
-                        <th scope="col">Hapus</th>
-                      </tr>
-                    </thead>
-                    <tbody id="cart">
-                    </tbody>
-                </table>
+                <div class="table-responsive">
+                    <table class="table table-striped" >
+                        <thead>
+                          <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Produk</th>
+                            <th scope="col">Harga</th>
+                            <th scope="col">QTY</th>
+                            <th scope="col">Hapus</th>
+                          </tr>
+                        </thead>
+                        <tbody id="cart">
+                        </tbody>
+                    </table>
+                </div>
 
                 <hr>
 
-                <div class="card-body">
-                    <input type="hidden" id="id">
-                        <div class="form-group">
-                            <label for="jumlah_pembayaran">Jumlah Pembayaran <span style="color: red">*</span></label>
-                            <div class="input-group-prepend">
-                                <div class="input-group-text">Rp</div>
-                                <input type="number" class="form-control" id="jumlah_pembayaran">
+                <ul class="nav nav-tabs" id="tabPembayaran" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="cash-tab" data-toggle="tab" href="#cash" role="tab" aria-controls="cash" aria-selected="true">Pembayaran Cash</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="hutang-tab" data-toggle="tab" href="#hutang" role="tab" aria-controls="hutang" aria-selected="false">Proses Catat Hutang</a>
+                    </li>
+                </ul>
+
+                <div class="tab-content" id="tabPembayaranContent">
+                    <div class="tab-pane fade show active" id="cash" role="tabpanel" aria-labelledby="cash-tab">
+                        <div class="card-body">
+                            <div class="alert alert-success alert-dismissible show fade" id="alert-success" style="display:none">
+                                <div class="alert-body">
+                                  <button class="close" data-dismiss="alert">
+                                    <span>&times;</span>
+                                  </button>
+                                  Pembayaran Sukses
+                                </div>
                             </div>
-                        </div>
-    
-                    <div class="form-row">
-                        <div class="form-group col-md-4">
-                            <label for="diskon">Diskon</label>
-                            <div class="input-group-prepend">
-                                <div class="input-group-text">%</div>
-                                <input type="number" class="form-control" name="diskon" id="diskon" value="{{ $diskon_enabled ? $diskonPresentase : 0 }}" disabled>
+                            <div class="alert alert-warning alert-dismissible show fade" id="alert-warning" style="display:none">
+                                <div class="alert-body">
+                                  <button class="close" data-dismiss="alert">
+                                    <span>&times;</span>
+                                  </button>
+                                  Jumlah Uang Yang Dimasukkan Kurang
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group col-md-4">
-                            <label for="ppn">PPn</label>
-                            <div class="input-group-prepend">
-                                <div class="input-group-text">%</div>
-                                <input type="number" class="form-control" name="ppn" id="ppn" value="{{ $ppn_enabled ? $ppnPresentase : 0 }}" disabled>
-                            </div>
-                        </div>
-                        <div class="form-group col-md-4">
-                            <label for="uang_kembalian">Kembalian</label>
-                            <div class="input-group-prepend">
-                                <div class="input-group-text">Rp</div>
-                                <input type="number" class="form-control" id="uang_kembalian" disabled>
-                            </div>
+        
+                            <input type="hidden" id="id">
+                            <input type="hidden" name="status" id="status" value="2">
+                                <div class="form-group">
+                                    <label for="jumlah_pembayaran">Jumlah Pembayaran <span style="color: red">*</span></label>
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">Rp</div>
+                                        <input type="number" class="form-control" id="jumlah_pembayaran" required>
+                                    </div>
+                                </div>
+            
+                                <div class="form-row">
+                                    <div class="form-group col-md-4">
+                                        <label for="diskon">Diskon</label>
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">%</div>
+                                            <input type="number" class="form-control" name="diskon" id="diskon" value="{{ $diskon_enabled ? $diskonPresentase : 0 }}" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="ppn">PPn</label>
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">%</div>
+                                            <input type="number" class="form-control" name="ppn" id="ppn" value="{{ $ppn_enabled ? $ppnPresentase : 0 }}" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="uang_kembalian">Kembalian</label>
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">Rp</div>
+                                            <input type="number" class="form-control" id="uang_kembalian" disabled>
+                                        </div>
+                                    </div>
+                                </div>
+                            <button type="button" class="btn btn-primary float-right" id="proses_pembayaran">Proses Pembayaran</button>
                         </div>
                     </div>
-                    <button type="button" class="btn btn-primary float-right" id="proses_pembayaran">Proses Pembayaran</button>
+
+                    <div class="tab-pane fade" id="hutang" role="tabpanel" aria-labelledby="hutang-tab">
+                        <div class="card-body">
+
+                            <div class="alert alert-success alert-dismissible show fade" id="alert-success" style="display:none">
+                                <div class="alert-body">
+                                  <button class="close" data-dismiss="alert">
+                                    <span>&times;</span>
+                                  </button>
+                                  Transaksi Tersimpan Menjadi Hutang
+                                </div>
+                            </div>
+
+                            <input type="hidden" id="id">
+                            <input type="hidden" name="status" id="status" value="1">
+                            <div class="form-group">
+                                <label for="nm_pelanggan">Nama Pelanggan <span style="color: red">*</span></label>
+                                <input type="text" class="form-control" name="nm_pelanggan" id="nm_pelanggan">
+                            </div>
+                            <div class="form-group">
+                                <label for="jumlah_pembayaran">Jumlah Pembayaran <span style="color: red">*</span></label>
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">Rp</div>
+                                    <input type="number" class="form-control" id="jumlah_pembayaran" name="jumlah_pembayaran" required>
+                                </div>
+                            </div>
+        
+                            <div class="form-row">
+                                <div class="form-group col-md-4">
+                                    <label for="diskon">Diskon</label>
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">%</div>
+                                        <input type="number" class="form-control" name="diskon" id="diskon" value="{{ $diskon_enabled ? $diskonPresentase : 0 }}" disabled>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="ppn">PPn</label>
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">%</div>
+                                        <input type="number" class="form-control" name="ppn" id="ppn" value="{{ $ppn_enabled ? $ppnPresentase : 0 }}" disabled>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="uang_kekurangam">Kekurangan</label>
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">Rp</div>
+                                        <input type="number" class="form-control" id="uang_kekurangan" name="uang_kekurangan" disabled>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-primary float-right" id="proses_pembayaran">Catat Hutang</button>
+                        </div>
+                    </div>
                 </div>
 
             </div>
@@ -202,9 +294,9 @@
 
         // Tambah Quantity pada keranjang 
         $('#cart').on('click', '.penambahan-quantity', function () {
-            var nm_produk        = $(this).closest('.cart-item').data('nm-produk');
-            var quantityElement = $(this).siblings('.quantity');
-            var quantitySekarang = parseInt(quantityElement.text());
+            var nm_produk           = $(this).closest('.cart-item').data('nm-produk');
+            var quantityElement     = $(this).siblings('.quantity');
+            var quantitySekarang    = parseInt(quantityElement.text());
 
             quantitySekarang++;
             quantityElement.text(quantitySekarang);
@@ -222,8 +314,90 @@
             }
         });
 
-        // Proses pembayaran
+        // Generate Kode Pembelian
+        function generateKodePembelian() {
+            var randomValue = Math.floor(Math.random() * 9999) + 1;
+            var kodePembelian = 'INV-' + String(randomValue).padStart(4, '0');
+            return kodePembelian;
+        }
+
+        // PrintStrukPembayaran
+        function printStruk(kd_pembelian){
+            var itemRows = $('#cart tr'); 
+            
+            var kodePembelian       = generateKodePembelian();
+            var subTotal            = document.getElementById('totalHarga').innerHTML;
+            var jumlahPembayaran    = parseFloat($('#jumlah_pembayaran').val());
+            var uangKembalian       = parseFloat($('#uang_kembalian').val());
+            var diskon              = parseFloat($('#diskon').val());
+            var ppn                 = parseFloat($('#ppn').val());
+            
+            var item = ''; 
+            itemRows.each(function() {
+                var nm_produk    = $(this).data('nm-produk');
+                var harga        = parseFloat($(this).find('td:eq(2)').text().replace('Rp. ', '')); 
+                var jumlah       = parseInt($(this).find('.quantity').text());
+                item += `
+                    <tr>
+                        <td>${nm_produk}</td>
+                        <td>${jumlah}</td>
+                        <td>${harga}</td>
+                    </tr>`;
+            });
+
+            var currentDate   = new Date();
+            var formattedData = currentDate.toLocaleString('id-ID', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric',
+            });
+
+            var kasir = '{{ Auth::user()->name }}';
+            var receiptContent = `
+                <div style="width: 300px; margin: 0 auto; text-align: center; border: 1px solid #000; padding: 10px;">
+                    <div style="text-align: center;">
+                        <h2>Toko Berkah</h2>
+                        <p>Karangmulyo, Rt01/Rw.02, Purwodadi, Purworejo, Jawa Tengah</p>
+                    </div>
+
+                    <div style="float-left;">
+                        Tanggal : ${formattedData} <br>
+                        Kasir   : ${kasir}
+                    </div>
+                    
+                    <p><strong>Kode Pembelian:</strong> ${kd_pembelian}</p>
+                    <hr style="border-top: 1px dashed #000;">
+                    <table style="width: 100%; text-align: left;">
+                        <tr>
+                            <th>Item</th>
+                            <th>Jumlah</th>
+                            <th>Harga</th>
+                        </tr>
+                        ${item}
+                    </table>
+                    <hr style="border-top: 1px dashed #000;">
+                    <p><strong>Total:</strong> Rp. ${subTotal}</p>
+                    <p><strong>Uang Masuk:</strong> Rp. ${jumlahPembayaran}</p>
+                    <p><strong>Kembalian:</strong> Rp. ${uangKembalian}</p>
+                    <p><strong>Diskon:</strong> ${diskon} %</p>
+                    <p><strong>PPn:</strong> ${ppn} %</p>
+                    <hr style="border-top: 1px dashed #000;">
+                    <h5> LUNAS !! </h5>
+                </div>
+            `;
+            
+            var printWindow = window.open('', '_blank', 'height=500, width=500');
+            printWindow.document.write(receiptContent);
+            printWindow.document.close();
+            printWindow.print();
+        }
+
+
+
+        // Proses pembayaran Cash
         $('#proses_pembayaran').on('click', function(){
+            var status              = $('#status').val();
+            var nm_pelanggan        = $('#nm_pelanggan').val();
             var jumlahPembayaran    = parseFloat($('#jumlah_pembayaran').val()); 
             var diskonPresentase    = parseFloat($('#diskon').val()); 
             var ppnPresentase       = parseFloat($('#ppn').val());
@@ -250,36 +424,61 @@
                 });
             });
 
-            var uangKembalian = jumlahPembayaran - subTotal;
+            var uangKembalian   = jumlahPembayaran - subTotal;
+            var uangKekurangan  = subTotal - jumlahPembayaran;
             var dataPembelian = {
                 jumlah_pembayaran: jumlahPembayaran,
                 produk_item: produkData,
                 subTotal: subTotal,
-                uangKembalian: uangKembalian
+                uangKembalian: uangKembalian,
+                uangKekurangan: uangKekurangan
             };
             
             $('#uang_kembalian').val(uangKembalian.toString());
+            $('#uang_kekurangan').val(uangKekurangan.toString());
  
-            $.ajax({
-                url: '/menu-penjualan',
-                method: 'POST',
-                data:{
-                    _token: '{{ csrf_token() }}',
-                    jumlah_pembayaran: jumlahPembayaran,
-                    diskon: diskonPresentase,
-                    ppn: ppnPresentase,
-                    pembelian_item: dataPembelian.produk_item,
-                    sub_total: dataPembelian.subTotal,
-                    uang_kembalian: dataPembelian.uangKembalian,
-                },
-                
-                success: function(response){
-                    console.log('message');
-                },
-                error: function(xhr, status, error) {
-                    console.log('Error:', error);
-                }
-            });
+            if(uangKembalian < 0){
+                $('#alert-warning').show();
+            } else {
+                $.ajax({
+                    url: '/menu-penjualan',
+                    method: 'POST',
+                    data:{
+                        _token: '{{ csrf_token() }}',
+                        status: status,
+                        nm_pelanggan: nm_pelanggan,
+                        jumlah_pembayaran: jumlahPembayaran,
+                        diskon: diskonPresentase,
+                        ppn: ppnPresentase,
+                        pembelian_item: dataPembelian.produk_item,
+                        sub_total: dataPembelian.subTotal,
+                        uang_kembalian: dataPembelian.uangKembalian || 0,
+                        uang_kekurangan: dataPembelian.uangKekurangan || 0
+                    },
+                    
+                    success: function(response){
+                        $('#alert-success').show();
+                        var kd_pembelian = response.kd_pembelian;
+                        printStruk(kd_pembelian);
+                    },
+                    error: function(xhr, status, error) {
+                        console.log('Error:', error);
+                    }
+                });
+            }
+        });
+
+
+        // Refresh Form
+        $('#refresh').on('click', function(){
+            $('#jumlah_pembayaran').val('');
+            $('#nm_produk').val([]).trigger('change');
+            $('#alert-success').remove();
+
+            $('#cart').empty();
+
+            $('#totalHarga').text('Rp. 0');
+            $('#uang_kembalian').val('0');
         });
     });
 </script>

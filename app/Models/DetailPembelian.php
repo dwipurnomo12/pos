@@ -14,4 +14,9 @@ class DetailPembelian extends Model
     {
         return $this->belongsTo(Pembelian::class);
     }
+
+    public function hutang()
+    {
+        return $this->belongsTo(Hutang::class);
+    }
 }

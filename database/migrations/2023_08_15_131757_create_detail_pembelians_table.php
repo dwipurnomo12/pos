@@ -17,7 +17,7 @@ return new class extends Migration
             $table->integer('quantity');
             $table->double('harga_produk');
             $table->double('total_harga_produk');
-            $table->foreignId('pembelian_id');
+            $table->foreignId('pembelian_id')->nullable();
             $table->timestamps();
         });
     }
