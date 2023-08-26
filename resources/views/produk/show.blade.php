@@ -57,15 +57,6 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label>Supplier</label>
-                                <select class="form-control" name="supplier_id" id="detail_supplier_id" disabled>
-                                    @foreach ($suppliers as $supplier)
-                                        <option value="{{ $supplier->id }}">{{ $supplier->supplier }}</option>
-                                    @endforeach
-                                </select> 
-                            </div>
-
-                            <div class="form-group">
                                 <label>Deskripsi</label>
                                 <textarea class="form-control" name="deskripsi" id="detail_deskripsi" disabled></textarea>
                             </div>

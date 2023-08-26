@@ -135,6 +135,13 @@
                 </a>
               </li>
 
+              <li class="menu-header">Laporan</li>
+              <li class="sidebar-item">
+                <a class="nav-link {{ Request::is('/stok-produk') || Request::is('stok-produk') ? 'active' : '' }}" href="/stok-produk">
+                  <i class="fa fa-sharp fa-solid fa-calculator"></i> <span class="align-middle">Stok Produk</span>
+                </a>
+              </li>
+
               <li class="menu-header">Settings</li>
               <li class="sidebar-item">
                 <a class="nav-link {{ Request::is('/setting-penjualan') || Request::is('setting-penjualan') ? 'active' : '' }}" href="/setting-penjualan">

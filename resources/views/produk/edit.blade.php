@@ -13,12 +13,12 @@
                         <input type="hidden" id="produk_id">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Nama Produk</label>
+                                <label>Nama Produk <span style="color: red">*</span></label>
                                 <input type="text" class="form-control" name="nm_produk" id="edit_nm_produk">
                                 <div class="alert alert-danger mt-2 d-none" role="alert" id="alert-nm_produk"></div>
                             </div>
                             <div class="form-group">
-                                <label>Kategori</label>
+                                <label>Kategori  <span style="color: red">*</span></label>
                                 <select class="form-control" name="kategori_id" id="edit_kategori_id">
                                     <option value="" selected>-- Pilih Kategori -- </option>
                                     @foreach ($kategories as $kategori)
@@ -26,19 +26,7 @@
                                     @endforeach
                                 </select>
                                 <div class="alert alert-danger mt-2 d-none" role="alert" id="edit_alert-kategori_id"></div>
-                            </div>
-                            <div class="form-group">
-                                <label>Supplier</label>
-                                <select class="form-control" name="supplier_id" id="edit_supplier_id">
-                                    <option value="" selected>-- Pilih Supplier -- </option>
-                                    @foreach ($suppliers as $supplier)
-                                        <option value="{{ $supplier->id }}">{{ $supplier->supplier }}</option>
-                                    @endforeach
-                                </select>
-                                <div class="alert alert-danger mt-2 d-none" role="alert" id="alert-supplier_id"></div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
+                            </div>  
                             <div class="form-group">
                                 <label for="edit_harga_jual">Harga Jual</label>
                                 <div class="input-group-prepend">
@@ -46,8 +34,10 @@
                                     <input type="text" class="form-control" id="edit_harga_jual">
                                 </div>
                             </div>
+                        </div>
+                        <div class="col-md-6">
                             <div class="form-group">
-                                <label>Satuan</label>
+                                <label>Satuan  <span style="color: red">*</span></label>
                                 <select class="form-control" name="satuan_id" id="edit_satuan_id">
                                     <option value="" selected>-- Pilih Satuan -- </option>
                                     @foreach ($satuans as $satuan)
@@ -57,7 +47,7 @@
                                 <div class="alert alert-danger mt-2 d-none" role="alert" id="alert-satuan_id"></div>
                             </div>
                             <div class="form-group">
-                                <label>Deskripsi</label>
+                                <label>Deskripsi  <span style="color: red">*</span></label>
                                 <textarea class="form-control" name="deskripsi" id="edit_deskripsi"></textarea>
                                 <div class="alert alert-danger mt-2 d-none" role="alert" id="alert-deskripsi"></div>
                             </div>

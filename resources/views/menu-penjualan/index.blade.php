@@ -72,124 +72,58 @@
 
                 <hr>
 
-                <ul class="nav nav-tabs" id="tabPembayaran" role="tablist">
-                    <li class="nav-item">
-                        <a class="nav-link active" id="cash-tab" data-toggle="tab" href="#cash" role="tab" aria-controls="cash" aria-selected="true">Pembayaran Cash</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="hutang-tab" data-toggle="tab" href="#hutang" role="tab" aria-controls="hutang" aria-selected="false">Proses Catat Hutang</a>
-                    </li>
-                </ul>
-
-                <div class="tab-content" id="tabPembayaranContent">
-                    <div class="tab-pane fade show active" id="cash" role="tabpanel" aria-labelledby="cash-tab">
-                        <div class="card-body">
-                            <div class="alert alert-success alert-dismissible show fade" id="alert-success" style="display:none">
-                                <div class="alert-body">
-                                  <button class="close" data-dismiss="alert">
-                                    <span>&times;</span>
-                                  </button>
-                                  Pembayaran Sukses
-                                </div>
-                            </div>
-                            <div class="alert alert-warning alert-dismissible show fade" id="alert-warning" style="display:none">
-                                <div class="alert-body">
-                                  <button class="close" data-dismiss="alert">
-                                    <span>&times;</span>
-                                  </button>
-                                  Jumlah Uang Yang Dimasukkan Kurang
-                                </div>
-                            </div>
-        
-                            <input type="hidden" id="id">
-                            <input type="hidden" name="status" id="status" value="2">
-                                <div class="form-group">
-                                    <label for="jumlah_pembayaran">Jumlah Pembayaran <span style="color: red">*</span></label>
-                                    <div class="input-group-prepend">
-                                        <div class="input-group-text">Rp</div>
-                                        <input type="number" class="form-control" id="jumlah_pembayaran" required>
-                                    </div>
-                                </div>
-            
-                                <div class="form-row">
-                                    <div class="form-group col-md-4">
-                                        <label for="diskon">Diskon</label>
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text">%</div>
-                                            <input type="number" class="form-control" name="diskon" id="diskon" value="{{ $diskon_enabled ? $diskonPresentase : 0 }}" disabled>
-                                        </div>
-                                    </div>
-                                    <div class="form-group col-md-4">
-                                        <label for="ppn">PPn</label>
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text">%</div>
-                                            <input type="number" class="form-control" name="ppn" id="ppn" value="{{ $ppn_enabled ? $ppnPresentase : 0 }}" disabled>
-                                        </div>
-                                    </div>
-                                    <div class="form-group col-md-4">
-                                        <label for="uang_kembalian">Kembalian</label>
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text">Rp</div>
-                                            <input type="number" class="form-control" id="uang_kembalian" disabled>
-                                        </div>
-                                    </div>
-                                </div>
-                            <button type="button" class="btn btn-primary float-right" id="proses_pembayaran">Proses Pembayaran</button>
+                <div class="card-body">
+                    <div class="alert alert-success alert-dismissible show fade" id="alert-success" style="display:none">
+                        <div class="alert-body">
+                          <button class="close" data-dismiss="alert">
+                            <span>&times;</span>
+                          </button>
+                          Pembayaran Sukses
+                        </div>
+                    </div>
+                    <div class="alert alert-warning alert-dismissible show fade" id="alert-warning" style="display:none">
+                        <div class="alert-body">
+                          <button class="close" data-dismiss="alert">
+                            <span>&times;</span>
+                          </button>
+                          Jumlah Uang Yang Dimasukkan Kurang
                         </div>
                     </div>
 
-                    <div class="tab-pane fade" id="hutang" role="tabpanel" aria-labelledby="hutang-tab">
-                        <div class="card-body">
-
-                            <div class="alert alert-success alert-dismissible show fade" id="alert-success" style="display:none">
-                                <div class="alert-body">
-                                  <button class="close" data-dismiss="alert">
-                                    <span>&times;</span>
-                                  </button>
-                                  Transaksi Tersimpan Menjadi Hutang
+                    <input type="hidden" id="id">
+                    <input type="hidden" name="status" id="status" value="lunas">
+                        <div class="form-group">
+                            <label for="jumlah_pembayaran">Jumlah Pembayaran <span style="color: red">*</span></label>
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">Rp</div>
+                                <input type="number" class="form-control" id="jumlah_pembayaran" required>
+                            </div>
+                        </div>
+    
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                                <label for="diskon">Diskon</label>
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">%</div>
+                                    <input type="number" class="form-control" name="diskon" id="diskon" value="{{ $diskon_enabled ? $diskonPresentase : 0 }}" disabled>
                                 </div>
                             </div>
-
-                            <input type="hidden" id="id">
-                            <input type="hidden" name="status" id="status" value="1">
-                            <div class="form-group">
-                                <label for="nm_pelanggan">Nama Pelanggan <span style="color: red">*</span></label>
-                                <input type="text" class="form-control" name="nm_pelanggan" id="nm_pelanggan">
+                            <div class="form-group col-md-4">
+                                <label for="ppn">PPn</label>
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">%</div>
+                                    <input type="number" class="form-control" name="ppn" id="ppn" value="{{ $ppn_enabled ? $ppnPresentase : 0 }}" disabled>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label for="jumlah_pembayaran">Jumlah Pembayaran <span style="color: red">*</span></label>
+                            <div class="form-group col-md-4">
+                                <label for="uang_kembalian">Kembalian</label>
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">Rp</div>
-                                    <input type="number" class="form-control" id="jumlah_pembayaran" name="jumlah_pembayaran" required>
+                                    <input type="number" class="form-control" id="uang_kembalian" disabled>
                                 </div>
                             </div>
-        
-                            <div class="form-row">
-                                <div class="form-group col-md-4">
-                                    <label for="diskon">Diskon</label>
-                                    <div class="input-group-prepend">
-                                        <div class="input-group-text">%</div>
-                                        <input type="number" class="form-control" name="diskon" id="diskon" value="{{ $diskon_enabled ? $diskonPresentase : 0 }}" disabled>
-                                    </div>
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label for="ppn">PPn</label>
-                                    <div class="input-group-prepend">
-                                        <div class="input-group-text">%</div>
-                                        <input type="number" class="form-control" name="ppn" id="ppn" value="{{ $ppn_enabled ? $ppnPresentase : 0 }}" disabled>
-                                    </div>
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label for="uang_kekurangam">Kekurangan</label>
-                                    <div class="input-group-prepend">
-                                        <div class="input-group-text">Rp</div>
-                                        <input type="number" class="form-control" id="uang_kekurangan" name="uang_kekurangan" disabled>
-                                    </div>
-                                </div>
-                            </div>
-                            <button type="button" class="btn btn-primary float-right" id="proses_pembayaran">Catat Hutang</button>
                         </div>
-                    </div>
+                    <button type="button" class="btn btn-primary float-right" id="proses_pembayaran">Proses Pembayaran</button>
                 </div>
 
             </div>
@@ -391,8 +325,6 @@
             printWindow.document.close();
             printWindow.print();
         }
-
-
 
         // Proses pembayaran Cash
         $('#proses_pembayaran').on('click', function(){

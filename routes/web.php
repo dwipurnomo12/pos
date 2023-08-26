@@ -11,6 +11,7 @@ use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\ProdukKeluarController;
 use App\Http\Controllers\ProdukMasukController;
 use App\Http\Controllers\SettingPenjualanController;
+use App\Http\Controllers\StokProdukController;
 use App\Http\Controllers\SupplierController;
 
 /*
@@ -53,6 +54,9 @@ Route::resource('/produk-keluar', ProdukKeluarController::class);
 
 Route::get('/api/menu-penjualan', [PenjualanController::class, 'getAutoCompleteData']);
 Route::resource('/menu-penjualan', PenjualanController::class);
+
+Route::get('/stok-produk/get-data', [StokProdukController::class, 'getDataStok']);
+Route::get('/stok-produk', [StokProdukController::class, 'index']);
 
 Route::get('/setting-penjualan', [SettingPenjualanController::class, 'index']);
 Route::post('/setting-penjualan/update-diskon', [SettingPenjualanController::class, 'updateDiskon']);

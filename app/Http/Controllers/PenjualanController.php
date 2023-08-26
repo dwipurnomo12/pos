@@ -32,9 +32,7 @@ class PenjualanController extends Controller
     public function store(Request $request)
     {
         $kd_pembelian       = 'INV-' . str_pad(rand(1, 9999), 4, '0', STR_PAD_LEFT);
-        $nm_pelanggan       = $request->input('nm_pelanggan');
         $jumlah_pembayaran  = $request->input('jumlah_pembayaran');
-        $status             = $request->input('status');
         $subTotal           = $request->input('sub_total');
         $diskon             = $request->input('diskon');
         $ppn                = $request->input('ppn');
@@ -45,16 +43,6 @@ class PenjualanController extends Controller
         $pembelian->sub_total           = $subTotal;
         $pembelian->diskon              = $diskon;
         $pembelian->ppn                 = $ppn;
-        if ($status === '1') { // Jika pembayaran hutang
-            $uang_kekurangan = $request->input('uang_kekurangan');
-            $pembelian->status = 'hutang';
-            $pembelian->uang_kekurangan = $uang_kekurangan;
-            $pembelian->nm_pelanggan = $nm_pelanggan;
-        } else if ($status === '2') { // Jika pembayaran cash
-            $uang_kembalian = $request->input('uang_kembalian');
-            $pembelian->status = 'lunas';
-            $pembelian->uang_kembalian = $uang_kembalian;
-        }
         $pembelian->save();
 
         foreach ($request->input('pembelian_item') as $item) {

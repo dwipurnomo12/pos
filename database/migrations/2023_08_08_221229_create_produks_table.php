@@ -20,7 +20,6 @@ return new class extends Migration
             $table->decimal('harga_beli')->nullable()->default('0');
             $table->decimal('harga_jual')->nullable()->default('0');
             $table->foreignId('kategori_id');
-            $table->foreignId('supplier_id');
             $table->foreignId('satuan_id');
             $table->foreignId('user_id');
             $table->timestamps();

@@ -87,7 +87,6 @@
     function clearAlert(){
         $('#alert-nm_produk').removeClass('d-block').addClass('d-none');
         $('#alert-kategori_id').removeClass('d-block').addClass('d-none');
-        $('#alert-supplier_id').removeClass('d-block').addClass('d-none');
         $('#alert-deskripsi').removeClass('d-block').addClass('d-none');
         $('#alert-satuan_id').removeClass('d-block').addClass('d-none');
     }
@@ -98,7 +97,6 @@
         let nm_produk   = $('#nm_produk').val();
         let deskripsi   = $('#deskripsi').val();
         let kategori_id = $('#kategori_id').val();
-        let supplier_id = $('#supplier_id').val();
         let satuan_id   = $('#satuan_id').val();
         let token       = $("meta[name='csrf-token']").attr("content");
 
@@ -106,7 +104,6 @@
         formData.append('nm_produk', nm_produk);
         formData.append('deskripsi', deskripsi);
         formData.append('kategori_id', kategori_id);
-        formData.append('supplier_id', supplier_id);
         formData.append('satuan_id', satuan_id);
         formData.append('_token', token);
 
@@ -156,7 +153,6 @@
                         $('#nm_produk').val('');
                         $('#deskripsi').val('');
                         $('#kategori_id').val('');
-                        $('#supplier_id').val('');
                         $('#satuan_id').val('');
                         $('#modal_tambah_produk').modal('hide');
 
@@ -188,12 +184,6 @@
 
                     $('#alert-kategori_id').html(error.responseJSON.kategori_id[0]);
                 }
-                if(error.responseJSON && error.responseJSON.supplier_id && error.responseJSON.supplier_id[0]){
-                    $('#alert-supplier_id').removeClass('d-none');
-                    $('#alert-supplier_id').addClass('d-block');
-
-                    $('#alert-supplier_id').html(error.responseJSON.supplier_id[0]);
-                }
                 if(error.responseJSON && error.responseJSON.satuan_id && error.responseJSON.satuan_id[0]){
                     $('#alert-satuan_id').removeClass('d-none');
                     $('#alert-satuan_id').addClass('d-block');
@@ -222,7 +212,6 @@
                 $('#detail_harga_jual').val(response.data.harga_jual);
                 $('#detail_harga_beli').val(response.data.harga_beli);
                 $('#detail_kategori_id').val(response.data.kategori_id);
-                $('#detail_supplier_id').val(response.data.supplier_id);
                 $('#detail_satuan_id').val(response.data.satuan_id);
                 $('#detail_stok').val(response.data.stok);
 
@@ -247,7 +236,6 @@
                 $('#edit_harga_jual').val(response.data.harga_jual);
                 $('#edit_deskripsi').val(response.data.deskripsi);
                 $('#edit_kategori_id').val(response.data.kategori_id);
-                $('#edit_supplier_id').val(response.data.supplier_id);
                 $('#edit_satuan_id').val(response.data.satuan_id);
 
                 $('#modal_edit_produk').modal('show');
@@ -263,7 +251,6 @@
         let harga_jual    = $('#edit_harga_jual').val();
         let deskripsi     = $('#edit_deskripsi').val();
         let kategori_id   = $('#edit_kategori_id').val();
-        let supplier_id   = $('#edit_supplier_id').val();
         let satuan_id     = $('#edit_satuan_id').val();
         let token         = $("meta[name='csrf-token']").attr('content');
 
@@ -272,7 +259,6 @@
         formData.append('harga_jual', harga_jual);
         formData.append('deskripsi', deskripsi);
         formData.append('kategori_id', kategori_id);
-        formData.append('supplier_id', supplier_id);
         formData.append('satuan_id', satuan_id);
         formData.append('_token', token);
         formData.append('_method', 'PUT');
@@ -330,12 +316,6 @@
                     $('#alert-kategori_id').addClass('d-block');
 
                     $('#alert-kategori_id').html(error.responseJSON.kategori_id[0]);
-                }
-                if(error.responseJSON && error.responseJSON.supplier_id && error.responseJSON.supplier_id[0]){
-                    $('#alert-supplier_id').removeClass('d-none');
-                    $('#alert-supplier_id').addClass('d-block');
-
-                    $('#alert-supplier_id').html(error.responseJSON.supplier_id[0]);
                 }
                 if(error.responseJSON && error.responseJSON.satuan_id && error.responseJSON.satuan_id[0]){
                     $('#alert-satuan_id').removeClass('d-none');

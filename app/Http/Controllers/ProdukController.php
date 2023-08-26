@@ -20,7 +20,6 @@ class ProdukController extends Controller
     {
         return view('produk.index', [
             'kategories' => Kategori::all(),
-            'suppliers'  => Supplier::all(),
             'satuans'    => Satuan::all(),
         ]);
     }
@@ -54,13 +53,11 @@ class ProdukController extends Controller
             'deskripsi'     => 'required',
             'kategori_id'   => 'required',
             'satuan_id'     => 'required',
-            'supplier_id'   => 'required'
         ], [
             'nm_produk.required'    => 'Nama Produk Tidak Boleh Kosong !',
             'deskripsi.required'    => 'Deskripsi Tidak Boleh Kosong !',
             'kategori_id.required'  => 'Pilih Kategori !',
             'satuan_id.required'    => 'Pilih Satuan !',
-            'supplier_id.required'  => 'Pilih Supplier !'
         ]);
 
         $kd_produk = 'PRD-' . str_pad(rand(1,9999), 4, '0', STR_PAD_LEFT);
@@ -75,7 +72,6 @@ class ProdukController extends Controller
             'deskripsi'     => $request->deskripsi,
             'kategori_id'   => $request->kategori_id,
             'satuan_id'     => $request->satuan_id,
-            'supplier_id'   => $request->supplier_id,
             'user_id'       => auth()->user()->id,
         ]);
 
@@ -124,14 +120,12 @@ class ProdukController extends Controller
             'deskripsi'     => 'required',
             'kategori_id'   => 'required',
             'satuan_id'     => 'required',
-            'supplier_id'   => 'required'
         ], [
             'nm_produk.required'    => 'Nama Produk Tidak Boleh Kosong !',
             'deskripsi.required'    => 'Deskripsi Tidak Boleh Kosong !',
             'harga_jual'            => 'Harga Jual Tidak Boleh Kosong !',
             'kategori_id.required'  => 'Pilih Kategori !',
             'satuan_id.required'    => 'Pilih Satuan !',
-            'supplier_id.required'  => 'Pilih Supplier !'
         ]);
 
         if($validator->fails()){
@@ -144,7 +138,6 @@ class ProdukController extends Controller
             'deskripsi'     => $request->deskripsi,
             'kategori_id'   => $request->kategori_id,
             'satuan_id'     => $request->satuan_id,
-            'supplier_id'   => $request->supplier_id,
             'user_id'       => auth()->user()->id
         ]);
 
