@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Stok;
 use App\Models\Produk;
 use App\Models\Satuan;
 use App\Models\Kategori;
-use App\Models\Supplier;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;

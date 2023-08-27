@@ -140,6 +140,9 @@
                 <a class="nav-link {{ Request::is('/stok-produk') || Request::is('stok-produk') ? 'active' : '' }}" href="/stok-produk">
                   <i class="fa fa-sharp fa-solid fa-calculator"></i> <span class="align-middle">Stok Produk</span>
                 </a>
+                <a class="nav-link {{ Request::is('/laporan-produk-masuk') || Request::is('laporan-produk-masuk') ? 'active' : '' }}" href="/laporan-produk-masuk">
+                  <i class="fa fa-sharp fa-light fa-file-import"></i> <span class="align-middle">Report Produk Masuk</span>
+                </a>
               </li>
 
               <li class="menu-header">Settings</li>

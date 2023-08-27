@@ -5,7 +5,7 @@
 <div class="section-header">
     <h1>Stok Produk</h1>
     <div class="ml-auto">
-        <a href="javascript:void(0)" class="btn btn-danger" id="print-stok"><i class="fa fa-sharp fa-light fa-print"></i> Print PDF</a>
+        <a href="javascript:void(0)" class="btn btn-danger" id="print-stok-produk"><i class="fa fa-sharp fa-light fa-print"></i> Print PDF</a>
     </div>
 </div>
 
@@ -78,7 +78,10 @@
                 }
             });
         }
-
+        $('#print-stok-produk').on('click', function(){
+            var selectedOption = $('#opsi-laporan-stok').val();
+            window.location.href = '/stok-produk/laporan-stok?opsi=' + selectedOption;
+        });
     });
 </script>
 

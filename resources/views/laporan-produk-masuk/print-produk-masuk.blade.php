@@ -52,25 +52,34 @@
                 <h2>Toko Kelongtong Berkah</h2>
                 <p>Jl. Mangkuyudan 1, Desa Karangmulyo Rt.01, Rw.02, Kecamatan Purwodadi <br> Kabupaten Purworejo, Jawa Tengah 54173</p>
                 <hr style="width: 85%; text-align: center;">
-                <h3 style="text-align: center;">Laporan Stok Berdasarkan : {{ $selectedOption }}</h3>
+                <h3 style="text-align: center;">Laporan Stok {{ ($tanggalMulai && $tanggalSelesai) ? $tanggalMulai . ' - ' . $tanggalSelesai : 'Semua Tanggal' }}
+                </h3>
             </div>
             <div class="col">
                 <table id="table_id" class="display">
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Kode Produk</th>
+                            <th>Tanggal Masuk</th>
+                            <th>Kode Transaksi</th>
                             <th>Nama Produk</th>
-                            <th>Stok</th>
+                            <th>Stok Masuk</th>
+                            <th>Harga Per-tem</th>
+                            <th>Total Harga</th>
+                            <th>Supplier</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($produks as $produk)
+                        @foreach ($data as $produk)
                             <tr>
                                 <td style="text-align: center">{{ $loop->iteration }}</td>
-                                <td>{{ $produk->kd_produk }}</td>
+                                <td>{{ $produk->tgl_masuk }}</td>
+                                <td>{{ $produk->kd_transaksi }}</td>
                                 <td>{{ $produk->nm_produk }}</td>
-                                <td style="text-align: center">{{ $produk->stok }}</td>
+                                <td style="text-align: center">{{ $produk->stok_masuk }}</td>
+                                <td>Rp. {{ $produk->harga_beli }}</td>
+                                <td>Rp. {{ $produk->total_harga }}</td>
+                                <td>{{ $produk->supplier->supplier }}</td>
                             </tr>  
                         @endforeach                     
                     </tbody>

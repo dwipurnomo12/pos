@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SatuanController;
 use App\Http\Controllers\KategoriController;
+use App\Http\Controllers\LaporanProdukMasukController;
 use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\ProdukKeluarController;
@@ -57,6 +58,12 @@ Route::resource('/menu-penjualan', PenjualanController::class);
 
 Route::get('/stok-produk/get-data', [StokProdukController::class, 'getDataStok']);
 Route::get('/stok-produk', [StokProdukController::class, 'index']);
+Route::get('/stok-produk/laporan-stok', [StokProdukController::class, 'printLaporanStok']);
+
+Route::get('/api/supplier/', [LaporanProdukMasukController::class, 'getSupplier']);
+Route::get('/laporan-produk-masuk/get-data', [LaporanProdukMasukController::class, 'getLaporanProdukMasuk']);
+Route::get('/laporan-produk-masuk', [LaporanProdukMasukController::class, 'index']);
+Route::get('/laporan-produk-masuk/print-produk-masuk', [LaporanProdukMasukController::class, 'printLaporanProdukMasuk']);
 
 Route::get('/setting-penjualan', [SettingPenjualanController::class, 'index']);
 Route::post('/setting-penjualan/update-diskon', [SettingPenjualanController::class, 'updateDiskon']);

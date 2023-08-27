@@ -75,6 +75,8 @@ class ProdukMasukController extends Controller
             'nm_produk'      => $request->nm_produk,
             'tgl_masuk'      => $request->tgl_masuk,
             'stok_masuk'     => $request->stok_masuk,
+            'harga_beli'     => $request->harga_beli,
+            'total_harga'    => $request->stok_masuk*$request->harga_beli,
             'user_id'        => auth()->user()->id,
             'supplier_id'    => $request->supplier_id
         ]);
