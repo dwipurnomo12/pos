@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('nm_produk');
             $table->date('tgl_keluar');
             $table->integer('stok_keluar');
+            $table->decimal('harga_beli');
+            $table->decimal('total_harga');
             $table->text('deskripsi');
             $table->foreignId('user_id');
             $table->timestamps();

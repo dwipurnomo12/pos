@@ -81,8 +81,10 @@
                     success: function (response){
                         if(response.stok || response.stok === 0){
                             $('#stok').val(response.stok);
+                            $('#harga_beli').val(response.harga_beli);
                         } else if (response && response.stok === 0){
                             $('#stok').val(0);
+                            $('#harga_beli').val(0);
                         }
                     }
                 });
@@ -135,6 +137,7 @@
         let nm_produk   = $('#nm_produk').val();
         let tgl_keluar  = $('#tgl_keluar').val();
         let stok_keluar = $('#stok_keluar').val();
+        let harga_beli  = $('#harga_beli ').val();
         let deskripsi   = $('#deskripsi').val();
         let token       = $("meta[name='csrf-token']").attr("content");
 
@@ -142,6 +145,7 @@
         formData.append('nm_produk', nm_produk);
         formData.append('tgl_keluar', tgl_keluar);
         formData.append('stok_keluar', stok_keluar);
+        formData.append('harga_beli', harga_beli);
         formData.append('deskripsi', deskripsi);
         formData.append('_token', token);
 
@@ -185,6 +189,7 @@
 
                         $('#nm_produk').val('');
                         $('#stok_keluar').val('');
+                        $('#harga_beli').val('');
                         $('#deskripsi').val('');
 
                         $('#modal_tambah_barangKeluar').modal('hide');

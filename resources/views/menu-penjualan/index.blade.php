@@ -357,17 +357,14 @@
             });
 
             var uangKembalian   = jumlahPembayaran - subTotal;
-            var uangKekurangan  = subTotal - jumlahPembayaran;
-            var dataPembelian = {
+            var dataPenjualan = {
                 jumlah_pembayaran: jumlahPembayaran,
                 produk_item: produkData,
                 subTotal: subTotal,
                 uangKembalian: uangKembalian,
-                uangKekurangan: uangKekurangan
             };
             
             $('#uang_kembalian').val(uangKembalian.toString());
-            $('#uang_kekurangan').val(uangKekurangan.toString());
  
             if(uangKembalian < 0){
                 $('#alert-warning').show();
@@ -382,10 +379,9 @@
                         jumlah_pembayaran: jumlahPembayaran,
                         diskon: diskonPresentase,
                         ppn: ppnPresentase,
-                        pembelian_item: dataPembelian.produk_item,
-                        sub_total: dataPembelian.subTotal,
-                        uang_kembalian: dataPembelian.uangKembalian || 0,
-                        uang_kekurangan: dataPembelian.uangKekurangan || 0
+                        penjualan_item: dataPenjualan.produk_item,
+                        sub_total: dataPenjualan.subTotal,
+                        uang_kembalian: dataPenjualan.uangKembalian,
                     },
                     
                     success: function(response){

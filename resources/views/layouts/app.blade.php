@@ -143,6 +143,12 @@
                 <a class="nav-link {{ Request::is('/laporan-produk-masuk') || Request::is('laporan-produk-masuk') ? 'active' : '' }}" href="/laporan-produk-masuk">
                   <i class="fa fa-sharp fa-light fa-file-import"></i> <span class="align-middle">Report Produk Masuk</span>
                 </a>
+                <a class="nav-link {{ Request::is('/laporan-produk-keluar') || Request::is('laporan-produk-keluar') ? 'active' : '' }}" href="/laporan-produk-keluar">
+                  <i class="fa fa-sharp fa-light fa-file-export"></i> <span class="align-middle">Report Produk Keluar</span>
+                </a>
+                <a class="nav-link {{ Request::is('/laporan-penjualan') || Request::is('laporan-penjualan') ? 'active' : '' }}" href="/laporan-penjualan">
+                  <i class="fa fa-sharp fa-solid fa-file-invoice"></i><span class="align-middle">Sales Report</span>
+                </a>
               </li>
 
               <li class="menu-header">Settings</li>

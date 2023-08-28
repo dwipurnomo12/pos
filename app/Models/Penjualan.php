@@ -5,13 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Pembelian extends Model
+class Penjualan extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
 
-    public function detailPembelians()
+    public function detailPenjualans()
     {
-        return $this->hasMany(DetailPembelian::class, 'pembelian_id');
+        return $this->hasMany(DetailPenjualan::class, 'penjualan_id');
     }
 }

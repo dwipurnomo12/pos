@@ -11,9 +11,9 @@
 </style>
 
 <div class="section-header">
-    <h1>Laporan Produk Masuk</h1>
+    <h1>Sales Report</h1>
     <div class="ml-auto">
-        <a href="javascript:void(0)" class="btn btn-danger" id="print-laporan-produk-masuk"><i class="fa fa-sharp fa-light fa-print"></i> Print PDF</a>
+        <a href="javascript:void(0)" class="btn btn-danger" id="print-laporan-penjualan"><i class="fa fa-sharp fa-light fa-print"></i> Print PDF</a>
     </div>
 </div>
 
@@ -22,7 +22,7 @@
         <div class="card card-primary">
             <div class="card-body">
                 <div class="form-group">
-                    <form id="filter_form" action="/laporan-produk-masuk/get-data" method="GET">
+                    <form id="filter_form" action="/laporan-penjualan/get-data" method="GET">
                         <div class="row">
                             <div class="col-md-5 my-2">
                                 <label>Pilih Tanggal Mulai :</label>
@@ -45,13 +45,10 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Tanggal Masuk</th>
+                                <th>Tgl Transaksi</th>
                                 <th>Kode Transaksi</th>
-                                <th>Nama Produk</th>
-                                <th>Stok Masuk</th>
-                                <th>Harga Per-tem</th>
-                                <th>Total Harga</th>
-                                <th>Supplier</th>
+                                <th>Sub-total</th>
+                                <th>Item Pembelian</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -79,23 +76,12 @@
             refreshTable();
         });
 
-        var suppliers = {}; 
-        $(document).ready(function () {
-            $.getJSON('{{ url('api/supplier') }}', function (data) {
-                suppliers = data.reduce(function (acc, supplier) {
-                    acc[supplier.id] = supplier.supplier;
-                    return acc;
-                }, {});
-                loadData();
-            });
-        });
-
         function loadData() {
-            var tanggalMulai = $('#tanggal_mulai').val();
-            var tanggalSelesai = $('#tanggal_selesai').val();
+            var tanggalMulai    = $('#tanggal_mulai').val();
+            var tanggalSelesai  = $('#tanggal_selesai').val();
 
             $.ajax({
-                url: '/laporan-produk-masuk/get-data',
+                url: '/laporan-penjualan/get-data',
                 type: "GET",
                 dataType: 'JSON',
                 data: {
@@ -110,21 +96,22 @@
                         $('#table_id tbody');
                     } else {
                         $.each(response, function (key, value) {
-                            let supplier = suppliers[value.supplier_id];
-                            let produkMasuk = `
+                            let detailItems = '';
+                            $.each(value.detail_penjualans, function(index, detailItem) {
+                                detailItems += `${detailItem.nm_produk} (${detailItem.quantity}), `;
+                            });
+
+                            let reportSales = `
                                 <tr class="barang-row" id="index_${value.id}">
                                     <td>${counter++}</td>
-                                    <td>${value.tgl_masuk}</td>
-                                    <td>${value.kd_transaksi}</td>
-                                    <td>${value.nm_produk}</td>
-                                    <td>${value.stok_masuk}</td>
-                                    <td>Rp. ${value.harga_beli}</td>
-                                    <td>Rp. ${value.total_harga}</td>
-                                    <td>${supplier}</td>
+                                    <td>${value.tgl_transaksi}</td>
+                                    <td>${value.kd_pembelian}</td>
+                                    <td>Rp. ${value.sub_total}</td>
+                                    <td>${detailItems}</td>
                                 </tr>
                             `;
-                            table.row.add($(produkMasuk)).draw(false);
-                    });
+                            table.row.add($(reportSales)).draw(false);
+                        });
                     }
                 }
             });
@@ -135,11 +122,11 @@
             loadData();
         }
 
-        $('#print-laporan-produk-masuk').on('click', function(){
+        $('#print-laporan-penjualan').on('click', function(){
             var tanggalMulai    = $('#tanggal_mulai').val();
             var tanggalSelesai  = $('#tanggal_selesai').val();
 
-            var url = '/laporan-produk-masuk/print-produk-masuk';
+            var url = '/laporan-penjualan/print-penjualan';
 
             if(tanggalMulai && tanggalSelesai){
                 url += '?tanggal_mulai=' + tanggalMulai + '&tanggal_selesai=' + tanggalSelesai;

@@ -75,7 +75,7 @@ class LaporanProdukMasukController extends Controller
         $pdf  = new Dompdf();
         $html = view('/laporan-produk-masuk/print-produk-masuk', compact('data', 'tanggalMulai', 'tanggalSelesai'))->render();
         $pdf->loadHtml($html);
-        $pdf->setPaper('A4', 'landscape');
+        $pdf->setPaper('A4', 'portrait');
         $pdf->render();
         $pdf->stream('print-produk-masuk.pdf', ['Attachment' => false]);
     }

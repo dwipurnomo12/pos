@@ -32,6 +32,13 @@
                                     <input type="number" class="form-control" name="stok" id="stok" disabled>  
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label>Harga Per-item <span style="color: red">*</span></label>
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">Rp</div>
+                                    <input type="number" class="form-control" name="harga_beli" id="harga_beli" disabled>  
+                                </div>
+                            </div>
                         </div>
 
                         <div class="col-md-6">

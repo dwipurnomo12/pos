@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Produk;
-use App\Models\Pembelian;
+use App\Models\Penjualan;
 use Illuminate\Http\Request;
-use App\Models\DetailPembelian;
-use App\Http\Controllers\Controller;
+use App\Models\DetailPenjualan;
 use App\Models\SettingPenjualan;
+use App\Http\Controllers\Controller;
 
 class PenjualanController extends Controller
 {
@@ -37,22 +38,23 @@ class PenjualanController extends Controller
         $diskon             = $request->input('diskon');
         $ppn                = $request->input('ppn');
 
-        $pembelian = new Pembelian();
-        $pembelian->kd_pembelian        = $kd_pembelian;
-        $pembelian->jumlah_pembayaran   = $jumlah_pembayaran;
-        $pembelian->sub_total           = $subTotal;
-        $pembelian->diskon              = $diskon;
-        $pembelian->ppn                 = $ppn;
-        $pembelian->save();
+        $penjualan = new Penjualan();
+        $penjualan->kd_pembelian        = $kd_pembelian;
+        $penjualan->tgl_transaksi       = Carbon::now()->toDateString();
+        $penjualan->jumlah_pembayaran   = $jumlah_pembayaran;
+        $penjualan->sub_total           = $subTotal;
+        $penjualan->diskon              = $diskon;
+        $penjualan->ppn                 = $ppn;
+        $penjualan->save();
 
-        foreach ($request->input('pembelian_item') as $item) {
-            $detailPembelian = new DetailPembelian();
-            $detailPembelian->nm_produk             = $item['nm_produk'];
-            $detailPembelian->harga_produk          = $item['harga_produk'];
-            $detailPembelian->quantity              = $item['quantity'];
-            $detailPembelian->total_harga_produk    = $item['total_harga_produk'];
-            $detailPembelian->pembelian_id          = $pembelian->id;
-            $detailPembelian->save();
+        foreach ($request->input('penjualan_item') as $item) {
+            $detailPenjualan = new DetailPenjualan();
+            $detailPenjualan->nm_produk             = $item['nm_produk'];
+            $detailPenjualan->harga_produk          = $item['harga_produk'];
+            $detailPenjualan->quantity              = $item['quantity'];
+            $detailPenjualan->total_harga_produk    = $item['total_harga_produk'];
+            $detailPenjualan->penjualan_id          = $penjualan->id;
+            $detailPenjualan->save();
 
             $produkStok = Produk::where('nm_produk', $item['nm_produk'])->first();
             if($produkStok){

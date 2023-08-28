@@ -81,6 +81,8 @@ class ProdukKeluarController extends Controller
             'tgl_keluar'     => $request->tgl_keluar,
             'stok_keluar'    => $request->stok_keluar,
             'deskripsi'      => $request->deskripsi,
+            'harga_beli'     => $request->harga_beli,
+            'total_harga'    => $request->stok_keluar*$request->harga_beli,
             'user_id'        => auth()->user()->id,
         ]);
 
@@ -109,6 +111,7 @@ class ProdukKeluarController extends Controller
             return response()->json([
                 'nm_produk'     => $produk->nm_produk,
                 'stok'          => $produk->stok,
+                'harga_beli'    => $produk->harga_beli
             ]);
         }
     }

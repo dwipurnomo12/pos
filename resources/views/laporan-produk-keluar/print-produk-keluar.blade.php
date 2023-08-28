@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Laporan Produk Masuk</title>
+    <title>Laporan Produk Keluar</title>
     <style>
         .container {
             text-align: center;
@@ -52,7 +52,7 @@
                 <h2>Toko Kelontong Berkah</h2>
                 <p>Jl. Mangkuyudan 1, Desa Karangmulyo Rt.01, Rw.02, Kecamatan Purwodadi <br> Kabupaten Purworejo, Jawa Tengah 54173</p>
                 <hr style="width: 85%; text-align: center;">
-                <h3 style="text-align: center;">Laporan produk Masuk {{ ($tanggalMulai && $tanggalSelesai) ? $tanggalMulai . ' - ' . $tanggalSelesai : 'Semua Range Tanggal' }}
+                <h3 style="text-align: center;">Laporan Produk Keluar {{ ($tanggalMulai && $tanggalSelesai) ? $tanggalMulai . ' - ' . $tanggalSelesai : 'Semua Range Tanggal' }}
                 </h3>
             </div>
             <div class="col">
@@ -60,13 +60,13 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Tanggal Masuk</th>
+                            <th>Tanggal Keluar</th>
                             <th>Kode Transaksi</th>
                             <th>Nama Produk</th>
-                            <th>Stok Masuk</th>
+                            <th>Stok Keluar</th>
                             <th>Harga Per-tem</th>
                             <th>Total Harga</th>
-                            <th>Supplier</th>
+                            <th>Deskripsi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -74,20 +74,20 @@
                         @foreach ($data as $produk)
                             <tr>
                                 <td style="text-align: center">{{ $loop->iteration }}</td>
-                                <td>{{ $produk->tgl_masuk }}</td>
+                                <td>{{ $produk->tgl_keluar }}</td>
                                 <td>{{ $produk->kd_transaksi }}</td>
                                 <td>{{ $produk->nm_produk }}</td>
-                                <td style="text-align: center">{{ $produk->stok_masuk }}</td>
+                                <td style="text-align: center">{{ $produk->stok_keluar }}</td>
                                 <td>Rp. {{ $produk->harga_beli }}</td>
-                                <td>Rp. {{ $produk->total_harga }}</td>
-                                <td>{{ $produk->supplier->supplier }}</td>
+                                <td>{{ $produk->total_harga }}</td>
+                                <td>{{ $produk->deskripsi }}</td>
                             </tr>  
                             <?php $totalHarga += $produk->total_harga; ?>
                         @endforeach                     
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="8"><strong>Total Biaya Pembelian : Rp. {{ number_format($totalHarga, 2, ',', '.') }}</strong></td>
+                            <td colspan="8"><strong>Total Biaya Kerugian : Rp. {{ number_format($totalHarga, 2, ',', '.') }}</strong></td>
                         </tr>
                     </tfoot>
                 </table>

@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SatuanController;
 use App\Http\Controllers\KategoriController;
+use App\Http\Controllers\LaporanPenjualanController;
+use App\Http\Controllers\LaporanProdukKeluarController;
 use App\Http\Controllers\LaporanProdukMasukController;
 use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\ProdukController;
@@ -64,6 +66,14 @@ Route::get('/api/supplier/', [LaporanProdukMasukController::class, 'getSupplier'
 Route::get('/laporan-produk-masuk/get-data', [LaporanProdukMasukController::class, 'getLaporanProdukMasuk']);
 Route::get('/laporan-produk-masuk', [LaporanProdukMasukController::class, 'index']);
 Route::get('/laporan-produk-masuk/print-produk-masuk', [LaporanProdukMasukController::class, 'printLaporanProdukMasuk']);
+
+Route::get('/laporan-produk-keluar/get-data', [LaporanProdukKeluarController::class, 'getlaporanProdukKeluar']);
+Route::get('/laporan-produk-keluar', [LaporanProdukKeluarController::class, 'index']);
+Route::get('/laporan-produk-keluar/print-produk-keluar', [LaporanProdukKeluarController::class, 'printLaporanProdukKeluar']);
+
+Route::get('/laporan-penjualan/get-data', [LaporanPenjualanController::class, 'getDataPenjualan']);
+Route::get('/laporan-penjualan', [LaporanPenjualanController::class, 'index']);
+Route::get('/laporan-penjualan/print-penjualan', [LaporanPenjualanController::class, 'printLaporanPenjualan']);
 
 Route::get('/setting-penjualan', [SettingPenjualanController::class, 'index']);
 Route::post('/setting-penjualan/update-diskon', [SettingPenjualanController::class, 'updateDiskon']);
