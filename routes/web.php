@@ -4,18 +4,20 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\SatuanController;
 use App\Http\Controllers\KategoriController;
-use App\Http\Controllers\LaporanPenjualanController;
-use App\Http\Controllers\LaporanProdukKeluarController;
-use App\Http\Controllers\LaporanProdukMasukController;
-use App\Http\Controllers\PenjualanController;
-use App\Http\Controllers\ProdukController;
-use App\Http\Controllers\ProdukKeluarController;
-use App\Http\Controllers\ProdukMasukController;
-use App\Http\Controllers\SettingPenjualanController;
-use App\Http\Controllers\StokProdukController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\PenjualanController;
+use App\Http\Controllers\StokProdukController;
+use App\Http\Controllers\ProdukMasukController;
+use App\Http\Controllers\ProdukKeluarController;
+use App\Http\Controllers\LaporanArusKasController;
+use App\Http\Controllers\LaporanLabaKotorController;
+use App\Http\Controllers\LaporanPenjualanController;
+use App\Http\Controllers\SettingPenjualanController;
+use App\Http\Controllers\LaporanProdukMasukController;
+use App\Http\Controllers\LaporanProdukKeluarController;
 
 /*
 |--------------------------------------------------------------------------
@@ -74,6 +76,12 @@ Route::get('/laporan-produk-keluar/print-produk-keluar', [LaporanProdukKeluarCon
 Route::get('/laporan-penjualan/get-data', [LaporanPenjualanController::class, 'getDataPenjualan']);
 Route::get('/laporan-penjualan', [LaporanPenjualanController::class, 'index']);
 Route::get('/laporan-penjualan/print-penjualan', [LaporanPenjualanController::class, 'printLaporanPenjualan']);
+
+Route::get('/laporan-arus-kas/get-data', [LaporanArusKasController::class, 'getDataArusKas']);
+Route::get('/laporan-arus-kas', [LaporanArusKasController::class, 'index']);
+
+Route::get('/laporan-laba-kotor', [LaporanLabaKotorController::class, 'getLaporanLabaKotor']);
+Route::get('/laporan-laba-kotor', [LaporanLabaKotorController::class, 'index']);
 
 Route::get('/setting-penjualan', [SettingPenjualanController::class, 'index']);
 Route::post('/setting-penjualan/update-diskon', [SettingPenjualanController::class, 'updateDiskon']);

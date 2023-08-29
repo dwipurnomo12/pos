@@ -147,7 +147,13 @@
                   <i class="fa fa-sharp fa-light fa-file-export"></i> <span class="align-middle">Report Produk Keluar</span>
                 </a>
                 <a class="nav-link {{ Request::is('/laporan-penjualan') || Request::is('laporan-penjualan') ? 'active' : '' }}" href="/laporan-penjualan">
-                  <i class="fa fa-sharp fa-solid fa-file-invoice"></i><span class="align-middle">Sales Report</span>
+                  <i class="fa fa-sharp fa-solid fa-file-invoice"></i> <span class="align-middle">Sales Report</span>
+                </a>
+                <a class="nav-link {{ Request::is('/laporan-arus-kas') || Request::is('laporan-arus-kas') ? 'active' : '' }}" href="/laporan-arus-kas">
+                  <i class="fa fa-sharp fa-solid fa-wallet"></i> <span class="align-middle">Arus Kas</span>
+                </a>
+                <a class="nav-link {{ Request::is('/laporan-laba-kotor') || Request::is('laporan-laba-kotor') ? 'active' : '' }}" href="/laporan-laba-kotor">
+                  <i class="fa fa-sharp fa-solid fa-money-bill"></i> <span class="align-middle">Laba Kotor</span>
                 </a>
               </li>
 

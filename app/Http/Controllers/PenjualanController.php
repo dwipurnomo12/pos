@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use App\Models\Kas;
 use App\Models\Produk;
 use App\Models\Penjualan;
 use Illuminate\Http\Request;
@@ -37,6 +38,7 @@ class PenjualanController extends Controller
         $subTotal           = $request->input('sub_total');
         $diskon             = $request->input('diskon');
         $ppn                = $request->input('ppn');
+        $uang_kembalian     = $request->input('uang_kembalian');
 
         $penjualan = new Penjualan();
         $penjualan->kd_pembelian        = $kd_pembelian;
@@ -46,6 +48,23 @@ class PenjualanController extends Controller
         $penjualan->diskon              = $diskon;
         $penjualan->ppn                 = $ppn;
         $penjualan->save();
+
+        $tanggalTransaksi = Carbon::now()->toDateString();
+        $kasEntry = Kas::where('tanggal', $tanggalTransaksi)->first();
+
+        if ($kasEntry) {
+            $kasEntry->pemasukan += $jumlah_pembayaran;
+            $kasEntry->pengeluaran += $uang_kembalian;
+            $kasEntry->saldo = $kasEntry->pemasukan - $kasEntry->pengeluaran;
+            $kasEntry->save();
+        } else {
+            $kasEntry = new Kas();
+            $kasEntry->tanggal = $tanggalTransaksi;
+            $kasEntry->pemasukan = $jumlah_pembayaran;
+            $kasEntry->pengeluaran = $uang_kembalian;
+            $kasEntry->saldo = $jumlah_pembayaran - $uang_kembalian;
+            $kasEntry->save();
+        }        
 
         foreach ($request->input('penjualan_item') as $item) {
             $detailPenjualan = new DetailPenjualan();

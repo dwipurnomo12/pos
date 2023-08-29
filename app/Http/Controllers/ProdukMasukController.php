@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Kas;
 use App\Models\Stok;
 use App\Models\Produk;
 use App\Models\Supplier;
@@ -9,6 +10,7 @@ use App\Models\ProdukMasuk;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
 
 class ProdukMasukController extends Controller
 {
@@ -80,6 +82,21 @@ class ProdukMasukController extends Controller
             'user_id'        => auth()->user()->id,
             'supplier_id'    => $request->supplier_id
         ]);
+
+        $tanggalTransaksi = Carbon::now()->toDateString();
+        $kasEntry = Kas::where('tanggal', $tanggalTransaksi)->first();
+
+        if ($kasEntry) {
+            $kasEntry->pengeluaran += $request->stok_masuk*$request->harga_beli;
+            $kasEntry->saldo -= $kasEntry->pengeluaran;
+            $kasEntry->save();  
+        } else {
+            $kasEntry = new Kas();
+            $kasEntry->tanggal = $tanggalTransaksi;
+            $kasEntry->pengeluaran = $request->stok_masuk*$request->harga_beli;
+            $kasEntry->saldo = $request->stok_masuk*$request->harga_beli;
+            $kasEntry->save();
+        }
 
         if($produkMasuk){
             $produk = Produk::where('nm_produk', $request->nm_produk)->first();
