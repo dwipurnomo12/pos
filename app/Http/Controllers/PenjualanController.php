@@ -49,22 +49,30 @@ class PenjualanController extends Controller
         $penjualan->ppn                 = $ppn;
         $penjualan->save();
 
+        $hariSebelumnya = Carbon::yesterday()->toDateString();
         $tanggalTransaksi = Carbon::now()->toDateString();
         $kasEntry = Kas::where('tanggal', $tanggalTransaksi)->first();
+        $kasEntryHariSebelumnya = Kas::where('tanggal', $hariSebelumnya)->first();
 
         if ($kasEntry) {
             $kasEntry->pemasukan += $jumlah_pembayaran;
             $kasEntry->pengeluaran += $uang_kembalian;
-            $kasEntry->saldo = $kasEntry->pemasukan - $kasEntry->pengeluaran;
+            $kasEntry->saldo = $kasEntryHariSebelumnya->saldo + $kasEntry->pemasukan - $kasEntry->pengeluaran;
             $kasEntry->save();
         } else {
             $kasEntry = new Kas();
             $kasEntry->tanggal = $tanggalTransaksi;
             $kasEntry->pemasukan = $jumlah_pembayaran;
             $kasEntry->pengeluaran = $uang_kembalian;
-            $kasEntry->saldo = $jumlah_pembayaran - $uang_kembalian;
+        
+            if ($kasEntryHariSebelumnya) {
+                $kasEntry->saldo = $kasEntryHariSebelumnya->saldo + $kasEntry->pemasukan - $kasEntry->pengeluaran;
+            } else {
+                $kasEntry->saldo = $kasEntry->pemasukan - $kasEntry->pengeluaran;
+            }
+        
             $kasEntry->save();
-        }        
+        }       
 
         foreach ($request->input('penjualan_item') as $item) {
             $detailPenjualan = new DetailPenjualan();

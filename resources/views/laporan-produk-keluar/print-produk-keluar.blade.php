@@ -74,7 +74,7 @@
                         @foreach ($data as $produk)
                             <tr>
                                 <td style="text-align: center">{{ $loop->iteration }}</td>
-                                <td>{{ $produk->tgl_keluar }}</td>
+                                <td style="text-align: center">{{ date('d-m-Y', strtotime($produk->tgl_keluar)) }}</td>
                                 <td>{{ $produk->kd_transaksi }}</td>
                                 <td>{{ $produk->nm_produk }}</td>
                                 <td style="text-align: center">{{ $produk->stok_keluar }}</td>

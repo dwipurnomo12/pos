@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\BiayaOperasional;
 use App\Models\Kas;
 use App\Models\User;
 use App\Models\Satuan;
@@ -62,10 +64,17 @@ class DatabaseSeeder extends Seeder
         ]);
         
         Kas::create([
-            'tanggal'       => '2023-08-29',
+            'tanggal'       => now()->toDateString(),
             'saldo'         => 100000.00,
             'pengeluaran'   => 0.00,
             'pemasukan'     => 0.00
+        ]);
+
+        BiayaOperasional::create([
+            'operasional'   => 'Bayar Kios',
+            'biaya'         => 500000,
+            'rentang'       => 'perbulan',
+            'user_id'       => 1
         ]);
     }
 }

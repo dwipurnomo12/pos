@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Dompdf\Dompdf;
+use App\Models\Kas;
 use App\Models\Penjualan;
 use App\Models\ProdukMasuk;
 use App\Models\ProdukKeluar;
@@ -15,38 +17,50 @@ class LaporanLabaKotorController extends Controller
      */
     public function index(Request $request)
     {
-        $tanggalAwal = $request->input('tanggal_awal');
-        $tanggalAkhir = $request->input('tanggal_akhir');
-
+        $tanggalMulai   = $request->input('tanggal_mulai', now()->toDateString());
+        $tanggalSelesai = $request->input('tanggal_selesai', now()->toDateString());
         
-        // Hitung total pendapatan dari Penjualan Kasir dalam rentang tanggal tertentu
-        $totalPendapatan = Penjualan::whereBetween('tgl_transaksi', [$tanggalAwal, $tanggalAkhir])
-            ->sum('sub_total');
-
-        // Hitung total biaya dari Produk Masuk dalam rentang tanggal tertentu
-        $totalBiayaProdukMasuk = ProdukMasuk::whereBetween('tgl_masuk', [$tanggalAwal, $tanggalAkhir])
-            ->sum('total_harga');
-
-        // Hitung total biaya dari Produk Keluar Rusak/Expired dalam rentang tanggal tertentu
-        $totalBiayaProdukKeluar = ProdukKeluar::whereBetween('tgl_keluar', [$tanggalAwal, $tanggalAkhir])
-            ->sum('total_harga');
-
-        // Hitung laba kotor
-        $labaKotor = $totalPendapatan - ($totalBiayaProdukMasuk + $totalBiayaProdukKeluar);
-
+        $totalPemasukan = Kas::whereBetween('tanggal', [$tanggalMulai, $tanggalSelesai])
+            ->sum('pemasukan');
+        
+        $totalPengeluaran = Kas::whereBetween('tanggal', [$tanggalMulai, $tanggalSelesai])
+            ->sum('pengeluaran');
+        
+        $labaKotor = $totalPemasukan - $totalPengeluaran;
+        
         return view('laporan-laba-kotor.index', [
-            'totalPendapatan' => $totalPendapatan,
-            'totalBiayaProdukMasuk' => $totalBiayaProdukMasuk,
-            'totalBiayaProdukKeluar' => $totalBiayaProdukKeluar,
-            'labaKotor' => $labaKotor,
-        ]);
+            'totalPemasukan'    => $totalPemasukan,
+            'totalPengeluaran'  => $totalPengeluaran,
+            'labaKotor'         => $labaKotor,
+            'tanggalMulai'      => $tanggalMulai,
+            'tanggalSelesai'    => $tanggalSelesai,
+        ]);  
     }
 
     /**
-     * Display a Fetch Data
+     * Display a Print Laporan laba Kotor.
      */
-    public function getLaporanLabaKotor(Request $request)
+    public function printLabaKotor(Request $request)
     {
- 
+        $tanggalMulai   = $request->input('tanggal_mulai', now()->toDateString());
+        $tanggalSelesai = $request->input('tanggal_selesai', now()->toDateString());
+        
+        $totalPemasukan = Kas::whereBetween('tanggal', [$tanggalMulai, $tanggalSelesai])
+            ->sum('pemasukan');
+        
+        $totalPengeluaran = Kas::whereBetween('tanggal', [$tanggalMulai, $tanggalSelesai])
+            ->sum('pengeluaran');
+        
+        $labaKotor = $totalPemasukan - $totalPengeluaran;
+
+        $checkData = $totalPemasukan || $totalPengeluaran || $labaKotor;
+        
+        $pdf    = new Dompdf();
+        $view   = view('laporan-laba-kotor/print-laba-kotor', compact('totalPemasukan', 'totalPengeluaran','labaKotor', 'tanggalMulai', 'tanggalSelesai', 'checkData'));
+        $html   = $view->render();
+        $pdf->loadHtml($html);
+        $pdf->setPaper('A4', 'portrait');
+        $pdf->render();
+        $pdf->stream('print-laba-kotor.pdf', ['Attachment' => false]);
     }
 }

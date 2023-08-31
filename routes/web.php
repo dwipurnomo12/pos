@@ -8,6 +8,8 @@ use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\SatuanController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\BiayaOperasional;
+use App\Http\Controllers\BiayaOperasionalController;
 use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\StokProdukController;
 use App\Http\Controllers\ProdukMasukController;
@@ -16,8 +18,10 @@ use App\Http\Controllers\LaporanArusKasController;
 use App\Http\Controllers\LaporanLabaKotorController;
 use App\Http\Controllers\LaporanPenjualanController;
 use App\Http\Controllers\SettingPenjualanController;
+use App\Http\Controllers\LaporanLabaBersihController;
 use App\Http\Controllers\LaporanProdukMasukController;
 use App\Http\Controllers\LaporanProdukKeluarController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -79,9 +83,15 @@ Route::get('/laporan-penjualan/print-penjualan', [LaporanPenjualanController::cl
 
 Route::get('/laporan-arus-kas/get-data', [LaporanArusKasController::class, 'getDataArusKas']);
 Route::get('/laporan-arus-kas', [LaporanArusKasController::class, 'index']);
+Route::get('/laporan-arus-kas/print-arus-kas', [LaporanArusKasController::class, 'printLaporanArusKas']);
 
-Route::get('/laporan-laba-kotor', [LaporanLabaKotorController::class, 'getLaporanLabaKotor']);
 Route::get('/laporan-laba-kotor', [LaporanLabaKotorController::class, 'index']);
+Route::get('/laporan-laba-kotor/print-laba-kotor', [LaporanLabaKotorController::class, 'printLabaKotor']);
+
+Route::get('/laporan-laba-bersih', [LaporanLabaBersihController::class, 'index']);
+
+Route::get('/biaya-operasional/get-data', [BiayaOperasionalController::class, 'getDataBiayaOperasional']);
+Route::resource('/biaya-operasional', BiayaOperasionalController::class);
 
 Route::get('/setting-penjualan', [SettingPenjualanController::class, 'index']);
 Route::post('/setting-penjualan/update-diskon', [SettingPenjualanController::class, 'updateDiskon']);

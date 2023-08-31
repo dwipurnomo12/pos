@@ -84,18 +84,25 @@ class ProdukMasukController extends Controller
         ]);
 
         $tanggalTransaksi = Carbon::now()->toDateString();
-        $kasEntry = Kas::where('tanggal', $tanggalTransaksi)->first();
-
-        if ($kasEntry) {
-            $kasEntry->pengeluaran += $request->stok_masuk*$request->harga_beli;
-            $kasEntry->saldo -= $kasEntry->pengeluaran;
-            $kasEntry->save();  
+        $hariSebelumnya = Carbon::yesterday()->toDateString();
+        $kasEntryHariIni = Kas::where('tanggal', $tanggalTransaksi)->first();
+        $kasEntryHariSebelumnya = Kas::where('tanggal', $hariSebelumnya)->first();
+        
+        $pengeluaran = $request->stok_masuk * $request->harga_beli;
+        
+        if ($kasEntryHariIni) {
+            $kasEntryHariIni->pengeluaran += $pengeluaran;
+            $kasEntryHariIni->saldo -= $pengeluaran;
+            $kasEntryHariIni->save();  
         } else {
-            $kasEntry = new Kas();
-            $kasEntry->tanggal = $tanggalTransaksi;
-            $kasEntry->pengeluaran = $request->stok_masuk*$request->harga_beli;
-            $kasEntry->saldo = $request->stok_masuk*$request->harga_beli;
-            $kasEntry->save();
+            $kasEntryHariIni = new Kas();
+            $kasEntryHariIni->tanggal = $tanggalTransaksi;
+            if ($kasEntryHariSebelumnya) {
+                $kasEntryHariIni->saldo = $kasEntryHariSebelumnya->saldo;
+            }
+            $kasEntryHariIni->pengeluaran = $pengeluaran;
+            $kasEntryHariIni->saldo -= $pengeluaran;
+            $kasEntryHariIni->save();
         }
 
         if($produkMasuk){

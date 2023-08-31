@@ -11,9 +11,9 @@
 </style>
 
 <div class="section-header">
-    <h1>Laporan Laba Kotor</h1>
+    <h1>Laporan Laba bersih</h1>
     <div class="ml-auto">
-        <a href="/laporan-laba-kotor/print-laba-kotor" class="btn btn-danger" id="print-laporan-penjualan"><i class="fa fa-sharp fa-light fa-print"></i> Print PDF</a>
+        <a href="/laporan-laba-bersih/print-laba-bersih" class="btn btn-danger" id="print-laporan-penjualan"><i class="fa fa-sharp fa-light fa-print"></i> Print PDF</a>
     </div>
 </div>
 
@@ -22,7 +22,7 @@
         <div class="card card-primary">
             <div class="card-body">
                 <div class="form-group">
-                    <form id="filter_form" action="/laporan-laba-kotor" method="GET">
+                    <form id="filter_form" action="/laporan-laba-bersih" method="GET">
                         <div class="row">
                             <div class="col-md-5 my-2">
                                 <label>Pilih Tanggal Mulai :</label>
@@ -40,11 +40,11 @@
                     </form>
                 </div>
                 <hr>
-                @if ($totalPemasukan || $totalPengeluaran || $labaKotor)
+                @if ($totalPemasukan || $totalPengeluaran || $lababersih)
                     <table class="table table-bordered" id="table">
                         <thead>
                             <tr>
-                                <th colspan="3">Laba Kotor Periode :  {{ ($tanggalMulai && $tanggalSelesai) ? date('d-m-Y', strtotime($tanggalMulai)) . ' - ' . date('d-m-Y', strtotime($tanggalSelesai)) : 'Hari Ini' }} </th>
+                                <th colspan="3">Laba bersih Periode :  {{ ($tanggalMulai && $tanggalSelesai) ? date('d-m-Y', strtotime($tanggalMulai)) . ' - ' . date('d-m-Y', strtotime($tanggalSelesai)) : 'Hari Ini' }} </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -59,9 +59,9 @@
                                 <td>Rp. {{ number_format($totalPengeluaran, 2, ',', '.') }}</td>
                             </tr>
                             <tr>
-                                <td class="table-warning">Laba Kotor</td>
+                                <td class="table-warning">Laba bersih</td>
                                 <td class="table-warning">:</td>
-                                <td class="table-warning">Rp. {{ number_format($labaKotor, 2, ',', '.') }}</td>
+                                <td class="table-warning">Rp. {{ number_format($labaBersih, 2, ',', '.') }}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -69,7 +69,7 @@
                 <table class="table table-bordered" id="table">
                     <thead>
                         <tr>
-                            <th colspan="3">Laba Kotor Periode :  {{ ($tanggalMulai && $tanggalSelesai) ? date('d-m-Y', strtotime($tanggalMulai)) . ' - ' . date('d-m-Y', strtotime($tanggalSelesai)) : 'Hari Ini' }} </th>
+                            <th colspan="3">Laba bersih Periode :  {{ ($tanggalMulai && $tanggalSelesai) ? date('d-m-Y', strtotime($tanggalMulai)) . ' - ' . date('d-m-Y', strtotime($tanggalSelesai)) : 'Hari Ini' }} </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -86,7 +86,7 @@
 
 <script>
     document.getElementById('refresh_btn').addEventListener('click', function() {
-        window.location.replace('/laporan-laba-kotor');
+        window.location.replace('/laporan-laba-bersih');
     });
 </script>
 @endsection

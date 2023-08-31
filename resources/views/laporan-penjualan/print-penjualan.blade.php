@@ -71,7 +71,7 @@
                         @foreach ($data as $produk)
                             <tr>
                                 <td style="text-align: center">{{ $loop->iteration }}</td>
-                                <td>{{ $produk->tgl_transaksi }}</td>
+                                <td style="text-align: center">{{ date('d-m-Y', strtotime($produk->tgl_transaksi)) }}</td>
                                 <td>{{ $produk->kd_pembelian }}</td>
                                 <td>Rp. {{ $produk->sub_total }}</td>
                                 <td>

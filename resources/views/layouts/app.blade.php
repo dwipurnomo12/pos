@@ -116,6 +116,9 @@
                   <li><a class="nav-link {{ Request::is('/supplier') || Request::is('supplier') ? 'active' : '' }}" href="/supplier">Supplier</a></li>
                   <li><a class="nav-link {{ Request::is('/satuan') || Request::is('satuan') ? 'active' : '' }}" href="/satuan">Satuan</a></li>
                 </ul>
+                <a class="nav-link {{ Request::is('/biaya-operasional') || Request::is('biaya-operasional') ? 'active' : '' }}" href="/biaya-operasional">
+                  <i class="fa fa-sharp fa-solid fa-coins"></i> <span class="align-middle">Biaya Operasional</span>
+                </a>
               </li>
 
               <li class="menu-header">Transaksi</li>
@@ -154,6 +157,9 @@
                 </a>
                 <a class="nav-link {{ Request::is('/laporan-laba-kotor') || Request::is('laporan-laba-kotor') ? 'active' : '' }}" href="/laporan-laba-kotor">
                   <i class="fa fa-sharp fa-solid fa-money-bill"></i> <span class="align-middle">Laba Kotor</span>
+                </a>
+                <a class="nav-link {{ Request::is('/laporan-laba-bersih') || Request::is('laporan-laba-bersih') ? 'active' : '' }}" href="/laporan-laba-bersih">
+                  <i class="fa fa-solid fa-money-bill-wave"></i> <span class="align-middle">Laba Bersih</span>
                 </a>
               </li>
 

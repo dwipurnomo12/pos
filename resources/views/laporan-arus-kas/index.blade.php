@@ -13,7 +13,7 @@
 <div class="section-header">
     <h1>Laporan Arus Kas</h1>
     <div class="ml-auto">
-        <a href="javascript:void(0)" class="btn btn-danger" id="print-laporan-arus-kas"><i class="fa fa-sharp fa-light fa-print"></i> Print PDF</a>
+        <a href="javascript:void(0)" class="btn btn-danger" id="print-arus-kas"><i class="fa fa-sharp fa-light fa-print"></i> Print PDF</a>
     </div>
 </div>
 
@@ -46,21 +46,12 @@
                             <tr>
                                 <th>No</th>
                                 <th>Tanggal</th>
-                                <th>Saldo Awal</th>
+                                <th>Saldo Tersisa</th>
                                 <th>Pengeluaran</th>
                                 <th>Pemasukan</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($arusKas as $kas)
-                            <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ $kas->tanggal }}</td>
-                                <td>{{ $kas->saldo }}</td>
-                                <td>{{ $kas->pengeluaran }}</td>
-                                <td>{{ $kas->pemasukan }}</td>
-                            </tr>
-                            @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -74,52 +65,70 @@
     $(document).ready(function () {
         let table = $('#table_id').DataTable();
 
-        // loadData();
+        loadData();
 
-        // $('#filter_form').submit(function (event){
-        //     event.preventDefault();
-        //     loadData();
-        // });
+        $('#filter_form').submit(function (event){
+            event.preventDefault();
+            loadData();
+        });
 
-        // $('#refresh_btn').on('click', function () { 
-        //     refreshTable();
-        // });
+        $('#refresh_btn').on('click', function () { 
+            refreshTable();
+        });
 
-        // function loadData(){
-        //     var tanggalMulai    = $('#tanggal_mulai').val();
-        //     var tanggalSelesai  = $('#tanggal_selesai').val();
+        function loadData(){
+            var tanggalMulai    = $('#tanggal_mulai').val();
+            var tanggalSelesai  = $('#tanggal_selesai').val();
 
-        //     $.ajax({
-        //         url: '/laporan-arus-kas/get-data',
-        //         type: "GET",
-        //         dataType: 'JSON',
-        //         data: {
-        //             tanggal_mulai: tanggalMulai,
-        //             tanggal_selesai: tanggalSelesai
-        //         },
-        //         success: function (response){
-        //             let counter = 1;
-        //             table.clear().draw();
+            $.ajax({
+                url: '/laporan-arus-kas/get-data',
+                type: "GET",
+                dataType: 'JSON',
+                data: {
+                    tanggal_mulai: tanggalMulai,
+                    tanggal_selesai: tanggalSelesai
+                },
+                success: function (response){
+                    let counter = 1;
+                    table.clear().draw();
 
-        //             if(response.length === 0){
-        //                 $('#table_id tbody');
-        //             } else {
-        //                 $.each(response, function (key, value){
-        //                     let arusKas = `
-        //                         <tr class="barang-row" id="index_${value.id}">
-        //                             <td>${counter++}</td>
-        //                             <td>${value.tanggal}</td>
-        //                             <td>Rp. ${value.saldo_awal}</td>
-        //                             <td>Rp. ${value.pengeluaran}</td>
-        //                             <td>Rp. ${value.pemasukan}</td>
-        //                         </tr>
-        //                     `;
-        //                     table.row.add($(arusKas)).draw(false);
-        //                 });
-        //             }
-        //         }
-        //     });
-        // }
+                    if(response.length === 0){
+                        $('#table_id tbody');
+                    } else {
+                        $.each(response, function (key, value){
+                            let arusKas = `
+                                <tr class="barang-row" id="index_${value.id}">
+                                    <td>${counter++}</td>
+                                    <td>${value.tanggal}</td>
+                                    <td><span class="badge badge-light">Rp. ${value.saldo}</span></td>
+                                    <td><span class="badge badge-danger">Rp. ${value.pengeluaran}</span></td>
+                                    <td><span class="badge badge-success">Rp. ${value.pemasukan}</span></td>
+                                </tr>
+                            `;
+                            table.row.add($(arusKas)).draw(false);
+                        });
+                    }
+                }
+            });
+        }
+
+        function refreshTable(){
+            $('#filter_form')[0].reset();
+            loadData();
+        }
+
+        $('#print-arus-kas').on('click', function(){
+            var tanggalMulai    = $('#tanggal_mulai').val();
+            var tanggalSelesai  = $('#tanggal_selesai').val();
+
+            var url = '/laporan-arus-kas/print-arus-kas';
+
+            if(tanggalMulai && tanggalSelesai){
+                url += '?tanggal_mulai=' + tanggalMulai + '&tanggal_selesai=' + tanggalSelesai;
+            }
+
+            window.location.href = url;
+        });
     });
 </script>
 
