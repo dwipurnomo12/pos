@@ -4,13 +4,15 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-use App\Models\BiayaOperasional;
 use App\Models\Kas;
 use App\Models\User;
+use App\Models\Produk;
 use App\Models\Satuan;
+use App\Models\Rentang;
 use App\Models\Kategori;
 use App\Models\Supplier;
 use Illuminate\Database\Seeder;
+use App\Models\BiayaOperasional;
 use App\Models\SettingPenjualan;
 
 class DatabaseSeeder extends Seeder
@@ -26,6 +28,17 @@ class DatabaseSeeder extends Seeder
             'password'  => bcrypt('1234')
         ]);
 
+        Produk::create([
+            'kd_produk'     => 'PRD-3623',
+            'nm_produk'     => 'Indomie Goreng',
+            'deskripsi'     => 'Indomie Goreng',
+            'stok'          => 0,
+            'harga_beli'    => 2000,
+            'harga_jual'    => 2500,
+            'kategori_id'   => 1,
+            'satuan_id'     => 1,
+            'user_id'       => 1
+        ]);
 
         Kategori::create([
             'kategori'  => 'Makanan',
@@ -73,8 +86,12 @@ class DatabaseSeeder extends Seeder
         BiayaOperasional::create([
             'operasional'   => 'Bayar Kios',
             'biaya'         => 500000,
-            'rentang'       => 'perbulan',
+            'rentang_id'    => 1,
             'user_id'       => 1
+        ]);
+
+        Rentang::create([
+            'rentang_bayar' => 'Perbulan'
         ]);
     }
 }

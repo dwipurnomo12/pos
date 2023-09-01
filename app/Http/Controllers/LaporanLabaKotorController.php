@@ -44,6 +44,13 @@ class LaporanLabaKotorController extends Controller
     {
         $tanggalMulai   = $request->input('tanggal_mulai', now()->toDateString());
         $tanggalSelesai = $request->input('tanggal_selesai', now()->toDateString());
+
+        if (empty($tanggalMulai)) {
+            $tanggalMulai = now()->toDateString();
+        }
+        if (empty($tanggalSelesai)) {
+            $tanggalSelesai = now()->toDateString();
+        }    
         
         $totalPemasukan = Kas::whereBetween('tanggal', [$tanggalMulai, $tanggalSelesai])
             ->sum('pemasukan');

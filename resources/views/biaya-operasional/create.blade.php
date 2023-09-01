@@ -17,7 +17,7 @@
                                 <div class="alert alert-danger mt-2 d-none" role="alert" id="alert-operasional"></div>
                             </div>
                             <div class="form-row">
-                                <div class="form-group col-md-8">
+                                <div class="form-group col-md-6">
                                     <label>Biaya <span style="color: red">*</span></label>
                                     <div class="input-group">
                                         <div class="input-group-prepend">
@@ -29,10 +29,15 @@
                                     </div>
                                     <div class="alert alert-danger mt-2 d-none" role="alert" id="alert-biaya"></div>
                                 </div>
-                                <div class="form-group col-md-4">
-                                    <label>Rentang <span style="color: red">*</span></label>
-                                    <input type="text" class="form-control" name="rentang" id="rentang">
-                                    <div class="alert alert-danger mt-2 d-none" role="alert" id="alert-rentang"></div>
+                                <div class="form-group col-md-6">
+                                    <label>Rentang Bayar <span style="color: red">*</span></label>
+                                    <select class="form-control" name="rentang_id" id="rentang_id">
+                                        <option value=""> -- Pilih Rentang Bayar -- </option>
+                                        @foreach ($rentangs as $rentang)
+                                            <option value="{{ $rentang->id }}">{{ $rentang->rentang_bayar }}</option>
+                                        @endforeach
+                                    </select>
+                                    <div class="alert alert-danger mt-2 d-none" role="alert" id="alert-rentang_id"></div>
                                 </div>
                             </div>
                         </div>

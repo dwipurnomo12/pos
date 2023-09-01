@@ -89,6 +89,7 @@ Route::get('/laporan-laba-kotor', [LaporanLabaKotorController::class, 'index']);
 Route::get('/laporan-laba-kotor/print-laba-kotor', [LaporanLabaKotorController::class, 'printLabaKotor']);
 
 Route::get('/laporan-laba-bersih', [LaporanLabaBersihController::class, 'index']);
+Route::get('/laporan-laba-bersih/print-laba-bersih', [LaporanLabaBersihController::class, 'printLabaBersih']);
 
 Route::get('/biaya-operasional/get-data', [BiayaOperasionalController::class, 'getDataBiayaOperasional']);
 Route::resource('/biaya-operasional', BiayaOperasionalController::class);

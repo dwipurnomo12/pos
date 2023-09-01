@@ -57,7 +57,11 @@ class PenjualanController extends Controller
         if ($kasEntry) {
             $kasEntry->pemasukan += $jumlah_pembayaran;
             $kasEntry->pengeluaran += $uang_kembalian;
-            $kasEntry->saldo = $kasEntryHariSebelumnya->saldo + $kasEntry->pemasukan - $kasEntry->pengeluaran;
+            if ($kasEntryHariSebelumnya) {
+                $kasEntry->saldo = $kasEntryHariSebelumnya->saldo + $jumlah_pembayaran - $uang_kembalian ;
+            } else {
+                $kasEntry->saldo = $kasEntry->saldo + $jumlah_pembayaran - $uang_kembalian ;
+            }
             $kasEntry->save();
         } else {
             $kasEntry = new Kas();

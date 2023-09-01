@@ -26,18 +26,18 @@
                         <div class="row">
                             <div class="col-md-5 my-2">
                                 <label>Pilih Tanggal Mulai :</label>
-                                <input type="date" class="form-control" name="tanggal_mulai" id="tanggal_mulai">
+                                <input type="date" class="form-control" name="tanggal_mulai" id="tanggal_mulai" value="{{ $tanggalMulai }}">
                             </div>
                             <div class="col-md-5 my-2">
                                 <label>Pilih Tanggal Selesai :</label>
-                                <input type="date" class="form-control" name="tanggal_selesai" id="tanggal_selesai">
+                                <input type="date" class="form-control" name="tanggal_selesai" id="tanggal_selesai" value="{{ $tanggalSelesai }}">
                             </div>
                             <div class="col-md-2 d-flex align-items-end my-2">
                                 <button type="submit" class="btn btn-primary mx-2">Filter</button>
                                 <button type="button" class="btn btn-danger" id="refresh_btn">Refresh</button>
                             </div>
                         </div>
-                    </form>
+                    </form>                    
                 </div>
                 <hr>
                 @if ($totalPemasukan || $totalPengeluaran || $labaKotor)

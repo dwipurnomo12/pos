@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Rentang;
 use Illuminate\Http\Request;
 use App\Models\BiayaOperasional;
 use App\Http\Controllers\Controller;
@@ -14,7 +15,9 @@ class BiayaOperasionalController extends Controller
      */
     public function index()
     {
-        return view('biaya-operasional.index');
+        return view('biaya-operasional.index',  [
+            'rentangs'   => Rentang::all()
+        ]);
     }
 
     /**
@@ -24,7 +27,7 @@ class BiayaOperasionalController extends Controller
     {
         return response()->json([
             'success' => true,
-            'data'    => BiayaOperasional::orderBy('id', 'DESC')->get()
+            'data'    => BiayaOperasional::with('rentang')->get()
         ]);
     }
 
@@ -44,12 +47,12 @@ class BiayaOperasionalController extends Controller
         $validator = Validator::make($request->all(), [
             'operasional'   => 'required',
             'biaya'         => 'required|numeric',
-            'rentang'       => 'required',
+            'rentang_id'       => 'required',
         ], [
             'operasional.required'   => 'Operasional Tidak Boleh Kosong !',
             'biaya.required'         => 'Biaya Tidak Boleh Kosong !',
-            'rentang.required'       => 'Rentang Tidak Boleh Kosong !',
-            'rentang.numeric'        => 'Hanya Tupe Number Yang Diijinkan'
+            'rentang_id.required'    => 'Rentang Bayar Tidak Boleh Kosong !',
+            'biaya.numeric'          => 'Hanya Tipe Number Yang Diijinkan'
         ]);
 
         if($validator->fails()){
@@ -59,7 +62,7 @@ class BiayaOperasionalController extends Controller
         $operasional = BiayaOperasional::create([
             'operasional'   => $request->operasional,
             'biaya'         => $request->biaya,
-            'rentang'       => $request->rentang,
+            'rentang_id'    => $request->rentang_id,
             'user_id'       => auth()->user()->id
         ]);
 
@@ -78,7 +81,7 @@ class BiayaOperasionalController extends Controller
         $operasional = BiayaOperasional::find($id);
         return response()->json([
             'success'   => true,
-            'message'   => 'Edit Data Produk',
+            'message'   => 'Edit Data Biaya Operasional',
             'data'      => $operasional
         ]);
     }
@@ -92,12 +95,12 @@ class BiayaOperasionalController extends Controller
         $validator = Validator::make($request->all(), [
             'operasional'   => 'required',
             'biaya'         => 'required|numeric',
-            'rentang'       => 'required',
+            'rentang_id'    => 'required',
         ], [
             'operasional.required'   => 'Operasional Tidak Boleh Kosong !',
             'biaya.required'         => 'Biaya Tidak Boleh Kosong !',
-            'rentang.required'       => 'Rentang Tidak Boleh Kosong !',
-            'rentang.numeric'        => 'Hanya Tupe Number Yang Diijinkan'
+            'rentang_id.required'    => 'Rentang Bayar Tidak Boleh Kosong !',
+            'biaya.numeric'          => 'Hanya Tupe Number Yang Diijinkan'
         ]);
 
         if($validator->fails()){
@@ -107,7 +110,7 @@ class BiayaOperasionalController extends Controller
         $operasional->update([
             'operasional'   => $request->operasional,
             'biaya'         => $request->biaya,
-            'rentang'       => $request->rentang,
+            'rentang_id'    => $request->rentang_id,
             'user_id'       => auth()->user()->id
         ]);
 
@@ -121,8 +124,13 @@ class BiayaOperasionalController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        BiayaOperasional::find($id)->delete();
+        return response()->json([
+            'success'   => true,
+            'message'   => 'Data Berhasil Dihapus !'
+        ]);
     }
+
 }

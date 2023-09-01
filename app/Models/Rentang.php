@@ -5,13 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class BiayaOperasional extends Model
+class Rentang extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
 
-    public function rentang()
+    public function operasionals()
     {
-        return $this->belongsTo(Rentang::class);
+        return $this->hasMany(BiayaOperasional::class);
     }
 }

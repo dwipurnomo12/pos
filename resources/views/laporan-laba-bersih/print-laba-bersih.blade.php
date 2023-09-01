@@ -55,11 +55,11 @@
                 </h3>
             </div>
             <div class="col">
-                @if ($totalPemasukan || $totalPengeluaran || $labaKotor)
+                @if ($totalPemasukan || $totalPengeluaran || $labaBersih)
                     <table class="table table-bordered" id="table">
                         <thead>
                             <tr>
-                                <th colspan="2">Laba Kotor Periode :  {{ ($tanggalMulai && $tanggalSelesai) ? date('d-m-Y', strtotime($tanggalMulai)) . ' - ' . date('d-m-Y', strtotime($tanggalSelesai)) : 'Hari Ini' }} </th>
+                                <th colspan="2">Laba bersih Bulan : {{ \Carbon\Carbon::parse($bulanTahun)->locale('id')->isoFormat('MMMM Y') }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -72,8 +72,16 @@
                                 <td>Rp. {{ number_format($totalPengeluaran, 2, ',', '.') }}</td>
                             </tr>
                             <tr>
-                                <td style="background: yellow">Laba Kotor</td>
-                                <td style="background: yellow">Rp. {{ number_format($labaKotor, 2, ',', '.') }}</td>
+                                <td>Biaya Operasional</td>
+                                <td>
+                                    @foreach ($dataBiayaOperasional as $Operasional)
+                                        <p> - {{ $Operasional->operasional }} : Rp. {{ number_format( $Operasional->biaya , 2, ',', '.') }} </p>
+                                    @endforeach
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="background: green">Laba bersih</td>
+                                <td style="background: green">Rp. {{ number_format($labaBersih, 2, ',', '.') }}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -81,7 +89,7 @@
                     <table class="table table-bordered" id="table">
                         <thead>
                             <tr>
-                                <th colspan="3">Laba Kotor Periode :  {{ ($tanggalMulai && $tanggalSelesai) ? date('d-m-Y', strtotime($tanggalMulai)) . ' - ' . date('d-m-Y', strtotime($tanggalSelesai)) : 'Hari Ini' }} </th>
+                                <th colspan="2">Laba bersih Bulan : {{ $bulanTahun  }} </th>
                             </tr>
                         </thead>
                         <tbody>

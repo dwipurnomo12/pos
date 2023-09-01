@@ -8,7 +8,7 @@
 <div class="section-header">
     <h1>List Biaya Operasional</h1>
     <div class="ml-auto">
-        <a href="javascript:void(0)" class="btn btn-primary" id="button_tambah_operasional"><i class="fa fa-plus"></i> Tambah Biaya Operasional</a>
+        <a href="javascript:void(0)" class="btn btn-primary" id="button_tambah_operasional"><i class="fa fa-plus"></i> Tambah</a>
     </div>
 </div>
 
@@ -37,6 +37,19 @@
     </div>
 </div>
 
+<script>
+    function formatRupiah(angka) {
+        var formatter = new Intl.NumberFormat('id-ID', {
+            style: 'currency',
+            currency: 'IDR',
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+
+        return formatter.format(angka).replace(/\s/g, ''); 
+    }
+</script>
+
 <!-- Datatables Jquery -->
 <script>
     $(document).ready(function(){
@@ -54,11 +67,11 @@
                     <tr class="barang-row" id="index_${value.id}">
                         <td>${counter++}</td>   
                         <td>${value.operasional}</td>
-                        <td>${value.biaya}</td>
-                        <td>${value.rentang}</td>
+                        <td>${formatRupiah(value.biaya)}</td>
+                        <td>${value.rentang.rentang_bayar}</td>
                         <td>
-                            <a href="javascript:void(0)" id="button_edit_operasional data-id="${value.id}" class="btn btn-warning mb-2"><i class="far fa-edit"></i> </a>
-                            <a href="javascript:void(0)" id="button_hapus_operasional data-id="${value.id}" class="btn btn-danger mb-2"><i class="fas fa-trash"></i> </a>
+                            <a href="javascript:void(0)" id="button_edit_operasional" data-id="${value.id}" class="btn btn-lg btn-warning mb-2"><i class="far fa-edit"></i> </a>
+                            <a href="javascript:void(0)" id="button_hapus_operasional" data-id="${value.id}" class="btn btn-lg btn-danger mb-2"><i class="fas fa-trash"></i> </a>
                         </td>
                     </tr>
                 `;
@@ -79,7 +92,7 @@
     function clearAlert(){
         $('#alert-operasional').removeClass('d-block').addClass('d-none');
         $('#alert-biaya').removeClass('d-block').addClass('d-none');
-        $('#alert-rentang').removeClass('d-block').addClass('d-none');
+        $('#alert-rentang_id').removeClass('d-block').addClass('d-none');
     }
     
     $('#store').click(function(e){
@@ -87,13 +100,13 @@
 
         let operasional     = $('#operasional').val();
         let biaya           = $('#biaya').val();
-        let rentang         = $('#rentang').val();
+        let rentang_id      = $('#rentang_id').val();
         let token           = $("meta[name='csrf-token']").attr("content");
 
         let formData = new FormData();
         formData.append('operasional', operasional);
         formData.append('biaya', biaya);
-        formData.append('rentang', rentang);
+        formData.append('rentang_id', rentang_id);
         formData.append('_token', token);
 
         $.ajax({
@@ -125,11 +138,11 @@
                             <tr class="barang-row" id="index_${value.id}">
                                 <td>${counter++}</td>   
                                 <td>${value.operasional}</td>
-                                <td>${value.biaya}</td>
-                                <td>${value.rentang}</td>
+                                <td>${formatRupiah(value.biaya)}</td>
+                                <td>${value.rentang.rentang_bayar}</td>
                                 <td>
-                                    <a href="javascript:void(0)" id="button_edit_operasional data-id="${value.id}" class="btn btn-warning mb-2"><i class="far fa-edit"></i> </a>
-                                    <a href="javascript:void(0)" id="button_hapus_operasional data-id="${value.id}" class="btn btn-danger mb-2"><i class="fas fa-trash"></i> </a>
+                                    <a href="javascript:void(0)" id="button_edit_operasional" data-id="${value.id}" class="btn btn-lg btn-warning mb-2"><i class="far fa-edit"></i> </a>
+                                    <a href="javascript:void(0)" id="button_hapus_operasional" data-id="${value.id}" class="btn btn-lg btn-danger mb-2"><i class="fas fa-trash"></i> </a>
                                 </td>
                             </tr>
                             `;
@@ -166,18 +179,11 @@
                     $('#alert-biaya').html(error.responseJSON.biaya[0]);
                 }
 
-                if(error.responseJSON && error.responseJSON.rentang && error.responseJSON.rentang[0]){
-                    $('#alert-rentang').removeClass('d-none');
-                    $('#alert-rentang').addClass('d-block');
+                if(error.responseJSON && error.responseJSON.rentang_id && error.responseJSON.rentang_id[0]){
+                    $('#alert-rentang_id').removeClass('d-none');
+                    $('#alert-rentang_id').addClass('d-block');
 
-                    $('#alert-rentang').html(error.responseJSON.rentang[0]);
-                }
-
-                if(error.responseJSON && error.responseJSON.status && error.responseJSON.status[0]){
-                    $('#alert-status').removeClass('d-none');
-                    $('#alert-status').addClass('d-block');
-
-                    $('#alert-status').html(error.responseJSON.status[0]);
+                    $('#alert-rentang_id').html(error.responseJSON.rentang_id[0]);
                 }
             }
         });
@@ -196,6 +202,8 @@
             success:function(response){
                 $('#operasional_id').val(response.data.id);
                 $('#edit_operasional').val(response.data.operasional);
+                $('#edit_biaya').val(response.data.biaya);
+                $('#edit_rentang_id').val(response.data.rentang_id);
 
                 $('#modal_edit_operasional').modal('show');
             }
@@ -205,17 +213,21 @@
     $('#update').click(function(e){
         e.preventDefault();
 
-        let satuan_id   = $('#satuan_id').val();
-        let satuan      = $('#edit_satuan').val();
-        let token        = $("meta[name='csrf-token']").attr('content');
+        let operasional_id   = $('#operasional_id').val();
+        let operasional      = $('#edit_operasional').val();
+        let biaya            = $('#edit_biaya').val();
+        let rentang_id       = $('#edit_rentang_id').val();
+        let token            = $("meta[name='csrf-token']").attr('content');
 
         let formData = new FormData();
-        formData.append('satuan', satuan);
+        formData.append('operasional', operasional);
+        formData.append('biaya', biaya);
+        formData.append('rentang_id', rentang_id);
         formData.append('_token', token);
         formData.append('_method', 'PUT');
 
         $.ajax({
-            url: `/satuan/${satuan_id}`,
+            url: `/biaya-operasional/${operasional_id}`,
             type: "POST",
             cache: false,
             data: formData,
@@ -231,19 +243,54 @@
                     timer:3000
                 });
 
-                let row = $(`#index_${response.data.id}`);
-                let rowData = row.find('td');
-                rowData.eq(1).text(response.data.satuan);
+                $.ajax({
+                    url: "/biaya-operasional/get-data",
+                    type: "GET",
+                    dataType: 'JSON',
+                    success: function(response){
+                        let counter = 1;
+                        $('#table_id').DataTable().clear();
+                        $.each(response.data, function(key, value){
+                            let operasional = `
+                            <tr class="barang-row" id="index_${value.id}">
+                                <td>${counter++}</td>   
+                                <td>${value.operasional}</td>
+                                <td>${formatRupiah(value.biaya)}</td>
+                                <td>${value.rentang.rentang_bayar}</td>
+                                <td>
+                                    <a href="javascript:void(0)" id="button_edit_operasional" data-id="${value.id}" class="btn btn-lg btn-warning mb-2"><i class="far fa-edit"></i> </a>
+                                    <a href="javascript:void(0)" id="button_hapus_operasional" data-id="${value.id}" class="btn btn-lg btn-danger mb-2"><i class="fas fa-trash"></i> </a>
+                                </td>
+                            </tr>
+                        `;
+                        $('#table_id').DataTable().row.add($(operasional)).draw(false);
+                        });
+                    }
+                });
                 
-                $('#modal_edit_satuan').modal('hide');
+                $('#modal_edit_operasional').modal('hide');
             },
             
             error:function(error){
-                if(error.responseJSON && error.responseJSON.satuan && error.responseJSON.satuan[0]){
-                    $('#alert-satuan').removeClass('d-none');
-                    $('#alert-satuan').addClass('d-block');
+                if(error.responseJSON && error.responseJSON.operasional && error.responseJSON.operasional[0]){
+                    $('#alert-operasional').removeClass('d-none');
+                    $('#alert-operasional').addClass('d-block');
 
-                    $('#alert-satuan').html(error.responseJSON.satuan[0]);
+                    $('#alert-operasional').html(error.responseJSON.operasional[0]);
+                }
+
+                if(error.responseJSON && error.responseJSON.biaya && error.responseJSON.biaya[0]){
+                    $('#alert-biaya').removeClass('d-none');
+                    $('#alert-biaya').addClass('d-block');
+
+                    $('#alert-biaya').html(error.responseJSON.biaya[0]);
+                }
+
+                if(error.responseJSON && error.responseJSON.rentang_id && error.responseJSON.rentang_id[0]){
+                    $('#alert-rentang_id').removeClass('d-none');
+                    $('#alert-rentang_id').addClass('d-block');
+
+                    $('#alert-rentang_id').html(error.responseJSON.rentang_id[0]);
                 }
             }
         });
@@ -252,9 +299,9 @@
 
 <!-- Modal Delete Data -->
 <script>
-$('body').on('click', '#button_hapus_satuan', function(){
-        let satuan_id = $(this).data('id');
-        let token       = $("meta[name='csrf-token']").attr("content");
+$('body').on('click', '#button_hapus_operasional', function(){
+        let operasional_id = $(this).data('id');
+        let token          = $("meta[name='csrf-token']").attr("content");
 
         Swal.fire({
                 title: 'Apakah Kamu Yakin?',
@@ -266,7 +313,7 @@ $('body').on('click', '#button_hapus_satuan', function(){
             }).then((result) => {
                 if(result.isConfirmed){
                     $.ajax({
-                        url: `/satuan/${satuan_id}`,
+                        url: `/biaya-operasional/${operasional_id}`,
                         type: "DELETE",
                         cache: false,
                         data: {
@@ -283,24 +330,26 @@ $('body').on('click', '#button_hapus_satuan', function(){
                             $('#table_id').DataTable().clear().draw();
 
                             $.ajax({
-                                url: "/satuan/get-data",
+                                url: "/biaya-operasional/get-data",
                                 type: "GET",
                                 dataType: 'JSON',
                                 success: function(response){
                                     let counter = 1;
                                     $('#table_id').DataTable().clear();
                                     $.each(response.data, function(key, value){
-                                        let satuan = `
+                                        let operasional = `
                                         <tr class="barang-row" id="index_${value.id}">
                                             <td>${counter++}</td>   
-                                            <td>${value.satuan}</td>
+                                            <td>${value.operasional}</td>
+                                            <td>${formatRupiah(value.biaya)}</td>
+                                            <td>${value.rentang.rentang_bayar}</td>
                                             <td>
-                                                <a href="javascript:void(0)" id="button_edit_satuan" data-id="${value.id}" class="btn btn-icon btn-warning btn-lg mb-2"><i class="far fa-edit"></i> </a>
-                                                <a href="javascript:void(0)" id="button_hapus_satuan" data-id="${value.id}" class="btn btn-icon btn-danger btn-lg mb-2"><i class="fas fa-trash"></i> </a>
+                                                <a href="javascript:void(0)" id="button_edit_operasional" data-id="${value.id}" class="btn btn-icon btn-warning btn-lg mb-2"><i class="far fa-edit"></i> </a>
+                                                <a href="javascript:void(0)" id="button_hapus_operasional" data-id="${value.id}" class="btn btn-icon btn-danger btn-lg mb-2"><i class="fas fa-trash"></i> </a>
                                             </td>
                                         </tr>
                                     `;
-                                    $('#table_id').DataTable().row.add($(satuan)).draw(false);
+                                    $('#table_id').DataTable().row.add($(operasional)).draw(false);
                                     });
                                 }
                             });

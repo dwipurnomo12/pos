@@ -24,13 +24,9 @@
                 <div class="form-group">
                     <form id="filter_form" action="/laporan-laba-bersih" method="GET">
                         <div class="row">
-                            <div class="col-md-5 my-2">
-                                <label>Pilih Tanggal Mulai :</label>
-                                <input type="date" class="form-control" name="tanggal_mulai" id="tanggal_mulai">
-                            </div>
-                            <div class="col-md-5 my-2">
-                                <label>Pilih Tanggal Selesai :</label>
-                                <input type="date" class="form-control" name="tanggal_selesai" id="tanggal_selesai">
+                            <div class="col-md-10">
+                                <label for="bulan_tahun">Pilih Bulan dan Tahun:</label>
+                                <input class="form-control" type="month" id="bulan_tahun" name="bulan_tahun" value="{{ now()->format('Y-m') }}" required>
                             </div>
                             <div class="col-md-2 d-flex align-items-end my-2">
                                 <button type="submit" class="btn btn-primary mx-2">Filter</button>
@@ -40,11 +36,11 @@
                     </form>
                 </div>
                 <hr>
-                @if ($totalPemasukan || $totalPengeluaran || $lababersih)
+                @if ($totalPemasukan || $totalPengeluaran || $labaBersih)
                     <table class="table table-bordered" id="table">
                         <thead>
                             <tr>
-                                <th colspan="3">Laba bersih Periode :  {{ ($tanggalMulai && $tanggalSelesai) ? date('d-m-Y', strtotime($tanggalMulai)) . ' - ' . date('d-m-Y', strtotime($tanggalSelesai)) : 'Hari Ini' }} </th>
+                                <th colspan="3">Laba bersih Bulan : {{ \Carbon\Carbon::parse($bulanTahun)->locale('id')->isoFormat('MMMM Y') }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -59,25 +55,34 @@
                                 <td>Rp. {{ number_format($totalPengeluaran, 2, ',', '.') }}</td>
                             </tr>
                             <tr>
-                                <td class="table-warning">Laba bersih</td>
-                                <td class="table-warning">:</td>
-                                <td class="table-warning">Rp. {{ number_format($labaBersih, 2, ',', '.') }}</td>
+                                <td>Biaya Operasional</td>
+                                <td>:</td>
+                                <td>
+                                    @foreach ($dataBiayaOperasional as $Operasional)
+                                        <p> - {{ $Operasional->operasional }} : Rp. {{ number_format( $Operasional->biaya , 2, ',', '.') }} </p>
+                                    @endforeach
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="table-success">Laba bersih</td>
+                                <td class="table-success">:</td>
+                                <td class="table-success">Rp. {{ number_format($labaBersih, 2, ',', '.') }}</td>
                             </tr>
                         </tbody>
                     </table>
                 @else
-                <table class="table table-bordered" id="table">
-                    <thead>
-                        <tr>
-                            <th colspan="3">Laba bersih Periode :  {{ ($tanggalMulai && $tanggalSelesai) ? date('d-m-Y', strtotime($tanggalMulai)) . ' - ' . date('d-m-Y', strtotime($tanggalSelesai)) : 'Hari Ini' }} </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Tidak Ada Data Yang Ditampilkan</td>
-                        </tr>
-                    </tbody>
-                </table>
+                    <table class="table table-bordered" id="table">
+                        <thead>
+                            <tr>
+                                <th colspan="3">Laba bersih Bulan : {{ $bulanTahun  }} </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Tidak Ada Data Yang Ditampilkan</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 @endif
             </div>
         </div>

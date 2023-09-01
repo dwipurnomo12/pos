@@ -11,12 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('biaya_operasionals', function (Blueprint $table) {
+        Schema::create('rentangs', function (Blueprint $table) {
             $table->id();
-            $table->string('operasional');
-            $table->decimal('biaya');
-            $table->foreignId('user_id');
-            $table->foreignId('rentang_id');
+            $table->string('rentang_bayar');
             $table->timestamps();
         });
     }
@@ -26,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('biaya_operasionals');
+        Schema::dropIfExists('rentangs');
     }
 };
