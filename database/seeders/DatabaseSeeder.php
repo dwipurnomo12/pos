@@ -5,6 +5,7 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 use App\Models\Kas;
+use App\Models\Role;
 use App\Models\User;
 use App\Models\Produk;
 use App\Models\Satuan;
@@ -25,7 +26,8 @@ class DatabaseSeeder extends Seeder
         User::create([
             'name'      => 'admin',
             'email'     => 'admin@gmail.com',
-            'password'  => bcrypt('1234')
+            'password'  => bcrypt('1234'),
+            'role_id'   => 1
         ]);
 
         Produk::create([
@@ -83,15 +85,14 @@ class DatabaseSeeder extends Seeder
             'pemasukan'     => 0.00
         ]);
 
-        BiayaOperasional::create([
-            'operasional'   => 'Bayar Kios',
-            'biaya'         => 500000,
-            'rentang_id'    => 1,
-            'user_id'       => 1
+        Role::create([
+            'role'  => 'admin',
         ]);
-
-        Rentang::create([
-            'rentang_bayar' => 'Perbulan'
+        Role::create([
+            'role'  => 'kepala toko',
+        ]);
+        Role::create([
+            'role'  => 'kasir',
         ]);
     }
 }

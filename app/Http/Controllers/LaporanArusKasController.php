@@ -3,11 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Kas;
-use App\Models\ProdukMasuk;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use Carbon\Carbon;
 use Dompdf\Dompdf;
 
 class LaporanArusKasController extends Controller

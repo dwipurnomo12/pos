@@ -133,12 +133,17 @@
 
 <!-- Datatables Jquery -->
 <script>
+    document.getElementById('refresh').addEventListener('click', function() {
+        window.location.replace('/menu-penjualan');
+    });
+</script>
+
+<!-- Datatables Jquery -->
+<script>
     $(document).ready(function(){
         $('#table_id').DataTable();
     })
 </script>
-
-
 
 <!-- Select2 & Autocomplete -->
 <script>
@@ -394,19 +399,6 @@
                     }
                 });
             }
-        });
-
-
-        // Refresh Form
-        $('#refresh').on('click', function(){
-            $('#jumlah_pembayaran').val('');
-            $('#nm_produk').val([]).trigger('change');
-            $('#alert-success').remove();
-
-            $('#cart').empty();
-
-            $('#totalHarga').text('Rp. 0');
-            $('#uang_kembalian').val('0');
         });
     });
 </script>

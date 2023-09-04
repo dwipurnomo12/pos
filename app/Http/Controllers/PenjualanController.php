@@ -49,7 +49,7 @@ class PenjualanController extends Controller
         $penjualan->ppn                 = $ppn;
         $penjualan->save();
 
-        $hariSebelumnya = Carbon::yesterday()->toDateString();
+        $hariSebelumnya = Carbon::now()->subDay()->toDateString();
         $tanggalTransaksi = Carbon::now()->toDateString();
         $kasEntry = Kas::where('tanggal', $tanggalTransaksi)->first();
         $kasEntryHariSebelumnya = Kas::where('tanggal', $hariSebelumnya)->first();
@@ -57,22 +57,18 @@ class PenjualanController extends Controller
         if ($kasEntry) {
             $kasEntry->pemasukan += $jumlah_pembayaran;
             $kasEntry->pengeluaran += $uang_kembalian;
-            if ($kasEntryHariSebelumnya) {
-                $kasEntry->saldo = $kasEntryHariSebelumnya->saldo + $jumlah_pembayaran - $uang_kembalian ;
-            } else {
-                $kasEntry->saldo = $kasEntry->saldo + $jumlah_pembayaran - $uang_kembalian ;
-            }
+            $kasEntry->saldo += $jumlah_pembayaran - $uang_kembalian;
             $kasEntry->save();
         } else {
             $kasEntry = new Kas();
-            $kasEntry->tanggal = $tanggalTransaksi;
-            $kasEntry->pemasukan = $jumlah_pembayaran;
-            $kasEntry->pengeluaran = $uang_kembalian;
+            $kasEntry->tanggal      = $tanggalTransaksi;
+            $kasEntry->pemasukan    = $jumlah_pembayaran;
+            $kasEntry->pengeluaran  = $uang_kembalian;
         
             if ($kasEntryHariSebelumnya) {
-                $kasEntry->saldo = $kasEntryHariSebelumnya->saldo + $kasEntry->pemasukan - $kasEntry->pengeluaran;
+                $kasEntry->saldo = $kasEntryHariSebelumnya->saldo + $kasEntry->jumlah_pembayaran - $kasEntry->uang_kembalian;
             } else {
-                $kasEntry->saldo = $kasEntry->pemasukan - $kasEntry->pengeluaran;
+                $kasEntry->saldo = $kasEntry->jumlah_pembayaran - $kasEntry->uang_kembalian;
             }
         
             $kasEntry->save();

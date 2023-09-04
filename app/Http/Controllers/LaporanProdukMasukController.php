@@ -60,6 +60,7 @@ class LaporanProdukMasukController extends Controller
         $tanggalMulai   = $request->input('tanggal_mulai');
         $tanggalSelesai = $request->input('tanggal_selesai');
 
+
         $produkMasuk = ProdukMasuk::query();
 
         if($tanggalMulai && $tanggalSelesai){
