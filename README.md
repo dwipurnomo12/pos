@@ -7,60 +7,104 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## About Laravel
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+# Aplikasi Point Of Sale
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Aplikasi Point of Sale (POS) berbasis web Laravel adalah sebuah sistem yang digunakan oleh bisnis untuk mengelola transaksi penjualan. Aplikasi ini dibangun menggunakan framework PHP Laravel dan diakses melalui web browser, yang memungkinkan pengguna untuk mengaksesnya dari berbagai perangkat seperti komputer, tablet, atau ponsel cerdas. Berikut adalah beberapa fitur dan komponen utama yang dapat ada dalam aplikasi POS berbasis web Laravel:
 
-## Learning Laravel
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+# Fitur
+1. Admin
+- Master produk (Produk, Kategori, Supplier, Satuan)
+- Set Diskon & PPn
+- Karyawan
+- Produk Masuk
+- Produk Keluar
+- Menu Penjualan / Kasir
+- Stok Produk
+- Laporan Produk Masuk
+- Laporan Produk Keluar
+- Laporan Penjualan
+- Laporan  Arus Kas
+- Laporan  Laba Kotor
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
 
-## Laravel Sponsors
+2. Kasir
+- Menu Penjualan / kasir
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
 
-### Premium Partners
+3. Kepala Toko / Owner Toko
+- Set Diskon & PPn
+- Produk Masuk
+- Produk Keluar
+- Menu Penjualan / Kasir
+- Stok Produk
+- Laporan Produk Masuk
+- Laporan Produk Keluar
+- Laporan Penjualan
+- Laporan  Arus Kas
+- Laporan  Laba Kotor
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
 
-## Contributing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Teknologi
 
-## Code of Conduct
+Aplikasi Point of Sale dibangun menggunakan beberapa Teknologi diantaranya :
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- Laravel - The PHP Framework for Web Artisans
+- JavaScript - JavaScript, often abbreviated as JS, is a programming language that is one of the core technologies of the World Wide Web, alongside HTML and CSS.
+- Bootstrap - Bootstrap is a free and open-source CSS framework directed at responsive, mobile-first front-end web development. 
 
-## Security Vulnerabilities
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
-## License
+## Installasi
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Lakukan Clone Project/Unduh manual .
+
+Aktifkan Xampp Control Panel, lalu akses ke http://localhost/phpmyadmin/.
+
+Buat database dengan nama 'pos'.
+
+Jika melakukan Clone Project, rename file .env.example dengan env dan hubungkan
+database nya dengan mengisikan nama database, 'DB_DATABASE=pos'.
+
+
+Kemudian, Ketik pada terminal :
+```sh
+php artisan migrate
+```
+
+Lalu ketik juga
+
+```sh
+php artisan migrate:fresh --seed
+```
+
+Jalankan aplikasi 
+
+```sh
+php artisan serve
+```
+
+Akses Aplikasi di Web browser 
+```sh
+127.0.0.1:8000
+```
+
+Demo Login :
+1. Admin
+    - email     : admin@gmail.com
+    - password  : 1234
+2. Kasir
+    - email     : kasir@gmail.com
+    - password  : 1111
+3. Kepala Toko / Owner Toko
+    - email     : abdul@gmail.com
+    - password  : 1111
+
+
+Demo Video : https://youtu.be/CCDemVVMzOo?si=ecQQt8N0JRhUfleV
+
+
