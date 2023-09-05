@@ -88,7 +88,7 @@
   <div class="col-lg-6">
     <div class="card card-primary">
       <div class="card-header">
-        Jumlah Penjualan
+        Jumlah Penjualan Harian
       </div>
       <div class="card-body">
           <canvas id="myChart"></canvas>
@@ -114,7 +114,7 @@
           @endforeach
         ],
         datasets: [{
-          label: 'Jumlah Penjualam',
+          label: 'Jumlah Penjualan',
           data: [
             @foreach($chartPenjualan as $data)
               {{ $data->total }},

@@ -83,7 +83,7 @@
                                 <td>{{ $produk->nm_produk }}</td>
                                 <td style="text-align: center">{{ $produk->stok_keluar }}</td>
                                 <td>Rp. {{ number_format($produk->harga_beli, 2,',', '.') }}</td>
-                                <td>{{ {{ number_format($produk->total_harga , 2, ',', '.') }}}}</td>
+                                <td>Rp. {{ number_format($produk->total_harga , 2, ',', '.') }}</td>
                                 <td>{{ $produk->deskripsi }}</td>
                             </tr>  
                             <?php $totalHarga += $produk->total_harga; ?>

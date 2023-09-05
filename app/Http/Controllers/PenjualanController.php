@@ -96,7 +96,6 @@ class PenjualanController extends Controller
         ], 200);
     }
 
-
     /**
      * Create Autocomplete Data
     */
@@ -111,4 +110,5 @@ class PenjualanController extends Controller
             ]);
         }
     }
+
 }

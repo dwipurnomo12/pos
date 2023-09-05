@@ -29,7 +29,7 @@
                     <select class="select2" name="nm_produk[]" id="nm_produk" multiple="multiple" style="width: 100%">
                         @foreach ($produks as $produk)
                             @if ($produk->stok > 0) 
-                                <option value="{{ $produk->nm_produk }}" data-harga_jual="{{ $produk->harga_jual }}"> {{ $produk->nm_produk }}</option>
+                                <option value="{{ $produk->nm_produk }}" data-harga_jual="{{ $produk->harga_jual }}" data-stok="{{ $produk->stok }}"> {{ $produk->nm_produk }}</option>
                             @endif
                         @endforeach
                     </select>
@@ -46,7 +46,18 @@
             <div class="card-header">
                 <h6>Keranjang Pembelian</h6>
             </div>
+
             <div class="card-body">
+
+                <div class="alert alert-danger alert-dismissible show fade" id="alert-stok" style="display:none">
+                    <div class="alert-body">
+                      <button class="close" data-dismiss="alert">
+                        <span>&times;</span>
+                      </button>
+                      Stok Melebihi Batas !
+                    </div>
+                </div>
+
                 <div class="alert alert-primary alert-has-icon">
                     <div class="alert-icon"><i class="fas fa-money-check"></i></div>
                     <div class="alert-body">
@@ -236,16 +247,21 @@
             var nm_produk           = $(this).closest('.cart-item').data('nm-produk');
             var quantityElement     = $(this).siblings('.quantity');
             var quantitySekarang    = parseInt(quantityElement.text());
+            var stok                = $(`#nm_produk option[value="${nm_produk}"]`).data('stok');
 
-            quantitySekarang++;
-            quantityElement.text(quantitySekarang);
-            updateTotalHarga(nm_produk, quantitySekarang); 
+            if (quantitySekarang < stok) {
+                quantitySekarang++;
+                quantityElement.text(quantitySekarang);
+                updateTotalHarga(nm_produk, quantitySekarang);
+            } else {
+                $('#alert-stok').show();
+            }
         });
 
         // Hapus List Produk Dari Keranjang
         $('#cart').on('click', '.remove-from-cart', function () {
-            var nm_produk = $(this).closest('.cart-item').data('nm-produk');
-            var index   = selectedProducts.indexOf(nm_produk);
+            var nm_produk   = $(this).closest('.cart-item').data('nm-produk');
+            var index       = selectedProducts.indexOf(nm_produk);
             if (index !== -1) {
                 selectedProducts.splice(index, 1);
                 $(this).closest('.cart-item').remove();
@@ -315,7 +331,7 @@
                         ${item}
                     </table>
                     <hr style="border-top: 1px dashed #000;">
-                    <p><strong>Total:</strong> Rp. ${subTotal}</p>
+                    <p><strong>Total:</strong> ${subTotal}</p>
                     <p><strong>Uang Masuk:</strong> Rp. ${jumlahPembayaran}</p>
                     <p><strong>Kembalian:</strong> Rp. ${uangKembalian}</p>
                     <p><strong>Diskon:</strong> ${diskon} %</p>
