@@ -1,3 +1,4 @@
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
@@ -106,5 +107,13 @@ Demo Login :
 
 
 Demo Video : https://youtu.be/CCDemVVMzOo?si=ecQQt8N0JRhUfleV
+
+
+## Screenshot
+![Screenshot_1099](https://github.com/dwipurnomo12/pos/assets/105181667/2ed4208c-7805-497a-910f-e03e149226fb)
+![Screenshot_1101](https://github.com/dwipurnomo12/pos/assets/105181667/72858818-04e7-4d6f-b774-d3bb613a4ecb)
+![Screenshot_1102](https://github.com/dwipurnomo12/pos/assets/105181667/722f6595-b60f-486d-9013-131807b6e6e0)
+![Screenshot_1104](https://github.com/dwipurnomo12/pos/assets/105181667/f85099dc-090b-4471-a646-5cafff417e12)
+![Screenshot_1107](https://github.com/dwipurnomo12/pos/assets/105181667/e25fc019-b546-46a2-b863-74e96954b66d)
 
 
