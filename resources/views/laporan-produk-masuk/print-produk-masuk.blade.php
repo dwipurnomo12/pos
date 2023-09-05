@@ -52,7 +52,11 @@
                 <h2>Toko Kelontong Berkah</h2>
                 <p>Jl. Mangkuyudan 1, Desa Karangmulyo Rt.01, Rw.02, Kecamatan Purwodadi <br> Kabupaten Purworejo, Jawa Tengah 54173</p>
                 <hr style="width: 85%; text-align: center;">
-                <h3 style="text-align: center;">Laporan produk Masuk {{ ($tanggalMulai && $tanggalSelesai) ? $tanggalMulai . ' - ' . $tanggalSelesai : 'Semua Range Tanggal' }}
+                <h3 style="text-align: center;">Laporan produk Masuk {{ 
+                    ($tanggalMulai && $tanggalSelesai) ? 
+                    date('d-m-Y', strtotime($tanggalMulai)) . ' - ' . date('d-m-Y', strtotime($tanggalSelesai)) : 
+                    'Semua Range Tanggal' 
+                }}
                 </h3>
             </div>
             <div class="col">
@@ -78,8 +82,8 @@
                                 <td>{{ $produk->kd_transaksi }}</td>
                                 <td>{{ $produk->nm_produk }}</td>
                                 <td style="text-align: center">{{ $produk->stok_masuk }}</td>
-                                <td>Rp. {{ $produk->harga_beli }}</td>
-                                <td>Rp. {{ $produk->total_harga }}</td>
+                                <td>Rp. {{ number_format( $produk->harga_beli, 2, ',', '.' ) }}</td>
+                                <td>Rp. {{ number_format( $produk->total_harga, 2, ',', '.') }}</td>
                                 <td>{{ $produk->supplier->supplier }}</td>
                             </tr>  
                             <?php $totalHarga += $produk->total_harga; ?>

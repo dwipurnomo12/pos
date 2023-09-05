@@ -29,7 +29,7 @@ class LaporanPenjualanController extends Controller
         $reportSales = Penjualan::query();
         
         if($tanggalMulai && $tanggalSelesai){
-            $reportSales->whereBetween('tgl_transaksi', [$tanggalMulai, $tanggalSelesai]);
+            $reportSales->whereBetween('tgl_transaksi', [$tanggalMulai, $tanggalSelesai])->with('detailPenjualans');
         }
         $data = $reportSales->get();
 
@@ -50,7 +50,7 @@ class LaporanPenjualanController extends Controller
         $reportSales = Penjualan::query();
         
         if($tanggalMulai && $tanggalSelesai){
-            $reportSales->whereBetween('tgl_transaksi', [$tanggalMulai, $tanggalSelesai]);
+            $reportSales->whereBetween('tgl_transaksi', [$tanggalMulai, $tanggalSelesai])->with('detailPenjualans');
         }
 
         if($tanggalMulai !== null && $tanggalSelesai !== null) {

@@ -100,13 +100,14 @@
                             $.each(value.detail_penjualans, function(index, detailItem) {
                                 detailItems += `${detailItem.nm_produk} (${detailItem.quantity}), `;
                             });
+                            let formattedSubTotal = parseFloat(value.sub_total).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' });
 
                             let reportSales = `
                                 <tr class="barang-row" id="index_${value.id}">
                                     <td>${counter++}</td>
                                     <td>${value.tgl_transaksi}</td>
                                     <td>${value.kd_pembelian}</td>
-                                    <td>Rp. ${value.sub_total}</td>
+                                    <td>${formattedSubTotal}</td>
                                     <td>${detailItems}</td>
                                 </tr>
                             `;

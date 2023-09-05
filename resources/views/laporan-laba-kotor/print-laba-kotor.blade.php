@@ -52,7 +52,11 @@
                 <h2>Toko Kelontong Berkah</h2>
                 <p>Jl. Mangkuyudan 1, Desa Karangmulyo Rt.01, Rw.02, Kecamatan Purwodadi <br> Kabupaten Purworejo, Jawa Tengah 54173</p>
                 <hr style="width: 85%; text-align: center;">
-                <h3 style="text-align: center;">Laporan Laba Kotor {{ ($tanggalMulai && $tanggalSelesai) ? $tanggalMulai . ' - ' . $tanggalSelesai : 'Semua Range Tanggal' }}
+                <h3 style="text-align: center;">Laporan Laba Kotor {{ 
+                    ($tanggalMulai && $tanggalSelesai) ? 
+                    date('d-m-Y', strtotime($tanggalMulai)) . ' - ' . date('d-m-Y', strtotime($tanggalSelesai)) : 
+                    'Semua Range Tanggal' 
+                }}
                 </h3>
             </div>
             <div class="col">

@@ -111,6 +111,8 @@
                     } else {
                         $.each(response, function (key, value) {
                             let supplier = suppliers[value.supplier_id];
+                            let formattedHargaBeli  = parseFloat(value.harga_beli).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' });
+                            let formattedTotalHarga = parseFloat(value.total_harga).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' });
                             let produkMasuk = `
                                 <tr class="barang-row" id="index_${value.id}">
                                     <td>${counter++}</td>
@@ -118,12 +120,12 @@
                                     <td>${value.kd_transaksi}</td>
                                     <td>${value.nm_produk}</td>
                                     <td>${value.stok_masuk}</td>
-                                    <td>Rp. ${value.harga_beli}</td>
-                                    <td>Rp. ${value.total_harga}</td>
+                                    <td>${formattedHargaBeli}</td>
+                                    <td>${formattedTotalHarga}</td>
                                     <td>${supplier}</td>
                                 </tr>
                             `;
-                            table.row.add($(produkMasuk)).draw(false);
+                        table.row.add($(produkMasuk)).draw(false);
                     });
                     }
                 }

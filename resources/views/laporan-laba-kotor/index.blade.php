@@ -98,13 +98,16 @@
                         $('#table_id tbody');
                     } else {
                         $.each(response, function (key, value) {
+                            let formattedPemasukan   = parseFloat(value.pemasukan).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' });
+                            let formattedPengeluaran = parseFloat(value.pengeluaran).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' });
+                            let formattedLabaKotor   = parseFloat(value.labaKotor).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' });
                             let labaKotor = `
                                 <tr class="barang-row" id="index_${value.id}">
                                     <td>${counter++}</td>
                                     <td>${value.tanggal}</td>
-                                    <td>Rp. ${value.pemasukan}</td>
-                                    <td>Rp. ${value.pengeluaran}</td>
-                                    <td><span class="badge badge-warning">Rp. ${value.labaKotor}</span></td>
+                                    <td>${formattedPemasukan}</td>
+                                    <td>${formattedPengeluaran}</td>
+                                    <td><span class="badge badge-warning">${formattedLabaKotor}</span></td>
                                 </tr>
                             `;
                             table.row.add($(labaKotor)).draw(false);

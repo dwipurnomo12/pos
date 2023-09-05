@@ -28,6 +28,7 @@
   <link rel="stylesheet" href="//cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
   <link rel="stylesheet" href="https://cdn.datatables.net/datetime/1.4.1/css/dataTables.dateTime.min.css">
 
+
   <!-- Start GA -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-94034622-3"></script>
   <script>
@@ -37,6 +38,7 @@
 
     gtag('config', 'UA-94034622-3');
   </script>
+
 
   
 <!-- /END GA --></head>
@@ -275,8 +277,8 @@
   <!-- Day Js Format -->
   <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
 
-  
-  @stack('scripts')
+ 
+  @stack('script')
 
   
   <script>

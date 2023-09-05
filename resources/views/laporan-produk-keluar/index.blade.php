@@ -99,6 +99,7 @@
                         $('#table_id tbody');
                     } else {
                         $.each(response, function (key, value) {
+                            let formattedHargaBeli  = parseFloat(value.harga_beli).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' });
                             let produkKeluar = `
                                 <tr class="barang-row" id="index_${value.id}">
                                     <td>${counter++}</td>
@@ -106,7 +107,7 @@
                                     <td>${value.kd_transaksi}</td>
                                     <td>${value.nm_produk}</td>
                                     <td>${value.stok_keluar}</td>
-                                    <td>Rp. ${value.harga_beli}</td>
+                                    <td>${formattedHargaBeli}</td>
                                     <td>${value.deskripsi}</td>
                                 </tr>
                             `;
