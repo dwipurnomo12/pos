@@ -6,7 +6,10 @@ use App\Models\Produk;
 use App\Models\Satuan;
 use App\Models\Kategori;
 use Illuminate\Http\Request;
+use App\Imports\ProduksImport;
 use App\Http\Controllers\Controller;
+use Maatwebsite\Excel\Facades\Excel;
+use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Validator;
 
 class ProdukController extends Controller
@@ -17,8 +20,8 @@ class ProdukController extends Controller
     public function index()
     {
         return view('produk.index', [
-            'kategories' => Kategori::all(),
-            'satuans'    => Satuan::all(),
+            'kategories' => Kategori::with(['kategori', 'satuan'])->orderBy('id', 'DESC')->get(),
+            'satuans'    => Satuan::all()
         ]);
     }
 
@@ -29,7 +32,7 @@ class ProdukController extends Controller
     {
         return response()->json([
             'success' => true,
-            'data'    => Produk::all()
+            'data'    => Produk::with(['kategori', 'satuan'])->orderBy('id', 'DESC')->get()
         ]);
     }
 
@@ -58,9 +61,9 @@ class ProdukController extends Controller
             'satuan_id.required'    => 'Pilih Satuan !',
         ]);
 
-        $kd_produk = 'PRD-' . str_pad(rand(1,9999), 4, '0', STR_PAD_LEFT);
+        $kd_produk = 'PRD-' . str_pad(rand(1, 9999), 4, '0', STR_PAD_LEFT);
 
-        if($validator->fails()){
+        if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
 
@@ -126,7 +129,7 @@ class ProdukController extends Controller
             'satuan_id.required'    => 'Pilih Satuan !',
         ]);
 
-        if($validator->fails()){
+        if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
 
@@ -154,7 +157,25 @@ class ProdukController extends Controller
         Produk::find($id)->delete();
         return response()->json([
             'success'   => true,
-            'message'   => 'Data Berhasil Dihapus !' 
+            'message'   => 'Data Berhasil Dihapus !'
         ]);
+    }
+
+    /**
+     * Import data excel.
+     */
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file'  => 'required|file|mimes:xlsx,xls'
+        ], [
+            'file.required'     => 'Tidak boleh kosong !',
+            'file.file'         => 'Harus ber-type file !',
+            'file.mimes'        => 'FOrmat yang di izinkan xlsx, xls'
+        ]);
+
+        $file = $request->file('file');
+        Excel::import(new ProduksImport, $file);
+        return redirect('/produk')->with('success', 'Data produk berhasil di Import !');
     }
 }

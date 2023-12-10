@@ -32,7 +32,7 @@ class ProdukMasukController extends Controller
     {
         return response()->json([
             'success'   => true,
-            'data'      => ProdukMasuk::orderBy('id', 'DESC')->get(),
+            'data'      => ProdukMasuk::with('supplier')->orderBy('id', 'DESC')->get(),
             'supplier'  => Supplier::all()
         ]);
     }
@@ -68,7 +68,7 @@ class ProdukMasukController extends Controller
 
         $kd_transaksi = 'PRD-IN-' . str_pad(rand(1, 9999), 4, '0', STR_PAD_LEFT);
 
-        if($validator->fails()){
+        if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
 
@@ -78,7 +78,7 @@ class ProdukMasukController extends Controller
             'tgl_masuk'      => $request->tgl_masuk,
             'stok_masuk'     => $request->stok_masuk,
             'harga_beli'     => $request->harga_beli,
-            'total_harga'    => $request->stok_masuk*$request->harga_beli,
+            'total_harga'    => $request->stok_masuk * $request->harga_beli,
             'user_id'        => auth()->user()->id,
             'supplier_id'    => $request->supplier_id
         ]);
@@ -87,13 +87,13 @@ class ProdukMasukController extends Controller
         $hariSebelumnya = Carbon::yesterday()->toDateString();
         $kasEntryHariIni = Kas::where('tanggal', $tanggalTransaksi)->first();
         $kasEntryHariSebelumnya = Kas::where('tanggal', $hariSebelumnya)->first();
-        
+
         $pengeluaran = $request->stok_masuk * $request->harga_beli;
-        
+
         if ($kasEntryHariIni) {
             $kasEntryHariIni->pengeluaran += $pengeluaran;
             $kasEntryHariIni->saldo -= $pengeluaran;
-            $kasEntryHariIni->save();  
+            $kasEntryHariIni->save();
         } else {
             $kasEntryHariIni = new Kas();
             $kasEntryHariIni->tanggal = $tanggalTransaksi;
@@ -105,9 +105,9 @@ class ProdukMasukController extends Controller
             $kasEntryHariIni->save();
         }
 
-        if($produkMasuk){
+        if ($produkMasuk) {
             $produk = Produk::where('nm_produk', $request->nm_produk)->first();
-            if($produk){
+            if ($produk) {
                 $produk->stok       += $request->stok_masuk;
                 $produk->harga_beli = $request->harga_beli;
                 $produk->harga_jual = $request->harga_jual;
@@ -156,11 +156,11 @@ class ProdukMasukController extends Controller
 
     /**
      * Create Autocomplete Data
-    */
+     */
     public function getAutoCompleteData(Request $request)
     {
         $produk = Produk::where('nm_produk', $request->nm_produk)->first();
-        if($produk){
+        if ($produk) {
             return response()->json([
                 'nm_produk'     => $produk->nm_produk,
                 'stok'          => $produk->stok,
@@ -169,5 +169,4 @@ class ProdukMasukController extends Controller
             ]);
         }
     }
-
 }

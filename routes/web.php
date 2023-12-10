@@ -33,19 +33,20 @@ use App\Http\Controllers\LaporanProdukKeluarController;
 */
 
 Auth::routes();
-Route::middleware('auth')->group(function() {
+Route::middleware('auth')->group(function () {
 
-    Route::group(['middleware'  => 'checkRole:admin,kasir,kepala toko'], function(){
+    Route::group(['middleware'  => 'checkRole:admin,kasir,kepala toko'], function () {
         Route::get('/', [HomeController::class, 'index']);
         Route::get('/home', [HomeController::class, 'index'])->name('home');
     });
 
-    Route::group(['middleware' => 'checkRole:admin,kasir'], function(){
+    Route::group(['middleware' => 'checkRole:admin,kasir'], function () {
         Route::get('/api/menu-penjualan', [PenjualanController::class, 'getAutoCompleteData']);
         Route::resource('/menu-penjualan', PenjualanController::class);
     });
 
-    Route::group(['middleware' => 'checkRole:admin'], function(){
+    Route::group(['middleware' => 'checkRole:admin'], function () {
+
         Route::get('/produk/get-data', [ProdukController::class, 'getDataProduk']);
         Route::resource('/produk', ProdukController::class);
 
@@ -63,42 +64,41 @@ Route::middleware('auth')->group(function() {
 
         Route::get('/produk-masuk/get-data', [ProdukMasukController::class, 'getDataProdukMasuk']);
         Route::get('/api/produk-masuk', [ProdukMasukController::class, 'getAutoCompleteData']);
+        Route::post('/produk/import', [ProdukController::class, 'import'])->name('produk.import');
         Route::resource('/produk-masuk', ProdukMasukController::class);
-    
+
         Route::get('/produk-keluar/get-data', [ProdukKeluarController::class, 'getDataProdukKeluar']);
         Route::get('/api/produk-keluar', [ProdukKeluarController::class, 'getAutoCompleteData']);
         Route::resource('/produk-keluar', ProdukKeluarController::class);
     });
 
-    Route::group(['middleware'  => 'checkRole:admin,kepala toko'], function(){
+    Route::group(['middleware'  => 'checkRole:admin,kepala toko'], function () {
         Route::get('/stok-produk/get-data', [StokProdukController::class, 'getDataStok']);
         Route::get('/stok-produk', [StokProdukController::class, 'index']);
         Route::get('/stok-produk/laporan-stok', [StokProdukController::class, 'printLaporanStok']);
-    
-        Route::get('/api/supplier/', [LaporanProdukMasukController::class, 'getSupplier']);
+
         Route::get('/laporan-produk-masuk/get-data', [LaporanProdukMasukController::class, 'getLaporanProdukMasuk']);
         Route::get('/laporan-produk-masuk', [LaporanProdukMasukController::class, 'index']);
         Route::get('/laporan-produk-masuk/print-produk-masuk', [LaporanProdukMasukController::class, 'printLaporanProdukMasuk']);
-    
+
         Route::get('/laporan-produk-keluar/get-data', [LaporanProdukKeluarController::class, 'getlaporanProdukKeluar']);
         Route::get('/laporan-produk-keluar', [LaporanProdukKeluarController::class, 'index']);
         Route::get('/laporan-produk-keluar/print-produk-keluar', [LaporanProdukKeluarController::class, 'printLaporanProdukKeluar']);
-    
+
         Route::get('/laporan-penjualan/get-data', [LaporanPenjualanController::class, 'getDataPenjualan']);
         Route::get('/laporan-penjualan', [LaporanPenjualanController::class, 'index']);
         Route::get('/laporan-penjualan/print-penjualan', [LaporanPenjualanController::class, 'printLaporanPenjualan']);
-    
+
         Route::get('/laporan-arus-kas/get-data', [LaporanArusKasController::class, 'getDataArusKas']);
         Route::get('/laporan-arus-kas', [LaporanArusKasController::class, 'index']);
         Route::get('/laporan-arus-kas/print-arus-kas', [LaporanArusKasController::class, 'printLaporanArusKas']);
-    
+
         Route::get('/laporan-laba-kotor/get-data', [LaporanLabaKotorController::class, 'getLaporanLabaKotor']);
         Route::get('/laporan-laba-kotor', [LaporanLabaKotorController::class, 'index']);
         Route::get('/laporan-laba-kotor/print-laba-kotor', [LaporanLabaKotorController::class, 'printLabaKotor']);
-    
+
         Route::get('/setting-penjualan', [SettingPenjualanController::class, 'index']);
         Route::post('/setting-penjualan/update-diskon', [SettingPenjualanController::class, 'updateDiskon']);
         Route::post('/setting-penjualan/update-ppn', [SettingPenjualanController::class, 'updatePpn']);
     });
-
 });

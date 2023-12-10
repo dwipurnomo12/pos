@@ -21,15 +21,6 @@ class LaporanProdukMasukController extends Controller
     }
 
     /**
-     * Display Get Supplier
-     */
-    public function getSupplier()
-    {
-        $supplier = Supplier::all();
-        return response()->json($supplier);
-    }
-
-    /**
      * Display a Fetch Data
      */
     public function getLaporanProdukMasuk(Request $request)
@@ -37,17 +28,17 @@ class LaporanProdukMasukController extends Controller
         $tanggalMulai   = $request->input('tanggal_mulai');
         $tanggalSelesai = $request->input('tanggal_selesai');
 
-        $produkMasuk = ProdukMasuk::query();
+        $produkMasuk = ProdukMasuk::query()->with('supplier');
 
-        if($tanggalMulai && $tanggalSelesai){
+        if ($tanggalMulai && $tanggalSelesai) {
             $produkMasuk->whereBetween('tgl_masuk', [$tanggalMulai, $tanggalSelesai]);
         }
 
         $data = $produkMasuk->get();
 
         if (empty($tanggalMulai) && empty($tanggalSelesai)) {
-            $data = ProdukMasuk::all();
-        } 
+            $data = ProdukMasuk::with('supplier')->get();
+        }
 
         return response()->json($data);
     }
@@ -61,16 +52,16 @@ class LaporanProdukMasukController extends Controller
         $tanggalSelesai = $request->input('tanggal_selesai');
 
 
-        $produkMasuk = ProdukMasuk::query();
+        $produkMasuk = ProdukMasuk::query()->with('supplier');
 
-        if($tanggalMulai && $tanggalSelesai){
+        if ($tanggalMulai && $tanggalSelesai) {
             $produkMasuk->whereBetween('tgl_masuk', [$tanggalMulai, $tanggalSelesai]);
         }
 
-        if($tanggalMulai !== null && $tanggalSelesai !== null){
+        if ($tanggalMulai !== null && $tanggalSelesai !== null) {
             $data = $produkMasuk->get();
-        }else{
-            $data = ProdukMasuk::all();
+        } else {
+            $data = ProdukMasuk::with('supplier')->get();
         }
 
         $pdf  = new Dompdf();
