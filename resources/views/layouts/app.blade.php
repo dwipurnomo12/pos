@@ -89,9 +89,9 @@
     <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
 
 
-    @stack('script')
+    @stack('script');
 
-
+    <!-- link active -->
     <script>
         $(document).ready(function() {
             var currentPath = window.location.pathname;

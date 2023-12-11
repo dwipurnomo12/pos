@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @include('produk-masuk.create')
+@include('produk-masuk.import')
 
 @section('content')
     <style>
@@ -16,11 +17,19 @@
         <div class="ml-auto">
             <a href="javascript:void(0)" class="btn btn-primary mx-2" id="button_tambah_barangMasuk"><i class="fa fa-plus"></i>
                 Tambah Produk Masuk</a>
+
+            <button class="btn btn-success" id="importBtn"><i class="fa fa-regular fa-file-excel"></i> Import Data
+                Produk</button>
         </div>
     </div>
 
     <div class="row">
         <div class="col-lg-12">
+            @if (session()->has('success'))
+                <div class="alert alert-success" role="alert">
+                    {{ session('success') }}
+                </div>
+            @endif
             <div class="card card-primary">
                 <div class="card-body">
                     <div class="table-responsive">
@@ -255,6 +264,38 @@
 
                         $('#alert-supplier_id').html(error.responseJSON.supplier_id[0]);
                     }
+                }
+            });
+        });
+    </script>
+
+    <!-- Import Excel Modal -->
+    <script>
+        $(document).ready(function() {
+            $("#importBtn").click(function() {
+                $("#importModal").modal("show");
+            });
+
+            $("#startImport").click(function() {
+                $("#importModal").modal("hide");
+            });
+        });
+    </script>
+
+    <!-- Validation file import -->
+    <script>
+        $(document).ready(function() {
+            $('form').submit(function(e) {
+                var inputFile = $('input[name="file"]');
+
+                if (inputFile.val() == '') {
+                    e.preventDefault();
+
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Pilih file Excel terlebih dahulu!',
+                    });
                 }
             });
         });

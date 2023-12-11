@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Kas;
 use App\Models\Stok;
 use App\Models\Produk;
 use App\Models\Supplier;
 use App\Models\ProdukMasuk;
 use Illuminate\Http\Request;
+use App\Imports\ProdukMasukImport;
 use App\Http\Controllers\Controller;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Validator;
-use Carbon\Carbon;
 
 class ProdukMasukController extends Controller
 {
@@ -68,6 +70,7 @@ class ProdukMasukController extends Controller
 
         $kd_transaksi = 'PRD-IN-' . str_pad(rand(1, 9999), 4, '0', STR_PAD_LEFT);
 
+
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
@@ -123,38 +126,6 @@ class ProdukMasukController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(ProdukMasuk $produkMasuk)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(ProdukMasuk $produkMasuk)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, ProdukMasuk $produkMasuk)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(ProdukMasuk $produkMasuk)
-    {
-        //
-    }
-
-    /**
      * Create Autocomplete Data
      */
     public function getAutoCompleteData(Request $request)
@@ -168,5 +139,23 @@ class ProdukMasukController extends Controller
                 'harga_jual'    => $produk->harga_jual
             ]);
         }
+    }
+
+    /**
+     * Import data excel.
+     */
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file'  => 'required|file|mimes:xlsx,xls'
+        ], [
+            'file.required'     => 'Tidak boleh kosong !',
+            'file.file'         => 'Harus ber-type file !',
+            'file.mimes'        => 'FOrmat yang di izinkan xlsx, xls'
+        ]);
+
+        $file = $request->file('file');
+        Excel::import(new ProdukMasukImport, $file);
+        return redirect('/produk-masuk')->with('success', 'Data produk berhasil di Import !');
     }
 }

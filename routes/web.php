@@ -48,6 +48,7 @@ Route::middleware('auth')->group(function () {
     Route::group(['middleware' => 'checkRole:admin'], function () {
 
         Route::get('/produk/get-data', [ProdukController::class, 'getDataProduk']);
+        Route::post('/produk/import', [ProdukController::class, 'import'])->name('produk.import');
         Route::resource('/produk', ProdukController::class);
 
         Route::get('/kategori/get-data', [KategoriController::class, 'getDataKategori']);
@@ -64,7 +65,7 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/produk-masuk/get-data', [ProdukMasukController::class, 'getDataProdukMasuk']);
         Route::get('/api/produk-masuk', [ProdukMasukController::class, 'getAutoCompleteData']);
-        Route::post('/produk/import', [ProdukController::class, 'import'])->name('produk.import');
+        Route::post('/produk-masuk/import', [ProdukMasukController::class, 'import'])->name('produkmasuk.import');
         Route::resource('/produk-masuk', ProdukMasukController::class);
 
         Route::get('/produk-keluar/get-data', [ProdukKeluarController::class, 'getDataProdukKeluar']);
